@@ -44,9 +44,11 @@ while running:
 
 	elif command == 1: #Calibration
 		print("CALIBRATION")
+		 Calbriate.__init__()
 	
 	elif command == 2: #Generate Tags
 		print("GENERATE TAGS")
+		GenerateTags.GenerateTags()
 
 	elif command == 3: #Eye to Hand
 		print("EYE TO HAND")

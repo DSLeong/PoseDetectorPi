@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import cv2.aruco as aruco
 import math
+
+import Calibrate
 import PanTilt
 
 def isRotationMatrix(R):
@@ -34,9 +36,14 @@ def rotationMatrixToEulerAngles(R):
 def poseDetector():
     marker_size = 100
 
-    with open('camera_cal.npy', 'rb') as f: 
-        camera_matrix = np.load(f)
-        camera_distortion = np.load(f)
+
+    if         np.save("calibration_matrix", mtx)
+        np.save("distortion_coefficients", dist)
+
+
+    #with open('Calibrate.npy', 'rb') as f: 
+    #    camera_matrix = np.load(f)
+    #    camera_distortion = np.load(f)
         
     aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_4X4_250)
 

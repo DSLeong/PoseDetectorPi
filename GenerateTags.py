@@ -27,7 +27,7 @@ class GenerateTags:
             iden = input('Please enter the ID of ArUCo tag to generate: ')
             
             if ARUCO_DICT.get(args["type"], None) == None:
-	            print(f"ArUCo tag type '{args['type']}' is not supported")
+	            print("ArUCo tag type '{args['type']}' is not supported")
                 continue
 
             good = True
@@ -43,7 +43,7 @@ class GenerateTags:
         cv.aruco.drawMarker(arucoDict, args["id"], tag_size, tag, 1)
 
         # Save the tag generated
-        tag_name = f'{args["output"]}/{args["type"]}_id_{args["id"]}.png'
+        tag_name = '{args["output"]}/{args["type"]}_id_{args["id"]}.png'
         cv.imwrite(tag_name, tag)
         cv.imshow("ArUCo Tag", tag)
         cv.waitKey(0)

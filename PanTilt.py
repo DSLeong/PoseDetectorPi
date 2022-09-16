@@ -1,6 +1,7 @@
 import math
 import time
 
+#need to import
 import pantilthat
 
 class PanTilt:
@@ -39,35 +40,35 @@ class PanTilt:
                 inputX, inputY, inputZ = int(inputX), int(inputY), int(inputZ)
         
 
-        if debugPanTilt
+        if debugPanTilt:
             #=============================
             #Pan
             #=============================
             pan = get_servo_one()
             #ey is left?
-            if ey  or :
+            if ey >= 0 and ey < 180:
                 if y > inputY:
-                    if pan + 1 > 90 or pan + 1 < -90
+                    if pan + 1 > 90 or pan + 1 < -90:
                         print("Error")
-                    else
+                    else:
                         pantilthat.pan(pan + 1)
                 else:
-                    if pan + 1 > 90 or pan + 1 < -90
+                    if pan + 1 > 90 or pan + 1 < -90:
                         print("Error")
-                    else
+                    else:
                         pantilthat.pan(pan + 1)
 
             #ey is Right?
             else:
                 if y > inputY:
-                    if pan + 1 > 90 or pan + 1 < -90
+                    if pan + 1 > 90 or pan + 1 < -90:
                         print("Error")
-                    else
+                    else:
                         pantilthat.pan(pan + 1)
                 else:
-                    if pan + 1 > 90 or pan + 1 < -90
+                    if pan + 1 > 90 or pan + 1 < -90:
                         print("Error")
-                    else
+                    else:
                         pantilthat.pan(pan + 1)
 
 
