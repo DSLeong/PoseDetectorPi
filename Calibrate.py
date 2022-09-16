@@ -18,7 +18,7 @@ class Calibrate:
         
         good = False
         while not good:
-            width = input('Please enter the width of the checkerboard (mm): ')
+            width = input('Please enter the width of the checkerboard (no. of squares): ')
             if not width.isnumeric():
                 print('Error: Please enter a number')
             elif int(width) <= 0:
@@ -30,7 +30,7 @@ class Calibrate:
 
         good = False
         while not good:
-            height = input('Please enter the height of the checkerboard (mm): ')
+            height = input('Please enter the height of the checkerboard (no. of squares): ')
             if not height.isnumeric():
                 print('Error: Please enter a number')
             elif int(height) <= 0:
@@ -41,13 +41,13 @@ class Calibrate:
        
         good = False
         while not good:
-            square_size = input('Please enter the size of the squares (mm): ')
+            square_size = input('Please enter the size of the squares (m): ')
             if not square_size.isnumeric():
                 print('Error: Please enter a number')
-            elif int(square_size) <= 0:
+            elif float(square_size) <= 0:
                 print('Error: Please enter a positive number')
             else:
-                square_size = int(square_size)
+                square_size = float(square_size)
                 good = True
     
         # 2.4 cm == 0.024 m
@@ -73,9 +73,7 @@ class Calibrate:
 
         # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(8,6,0)
         objp = np.zeros((height*width, 3), np.float32)
-        objp[:, :2] = np.mgrid[0:width, 0:height].T.reshape(-1, 2)
-
-        objp = objp * square_size
+        objp[:, :2] = np.mgrid[0:width, 0:height].T.reshape(-1, 2) * square_size
 
         # Arrays to store object points and image points from all the images.
         objpoints = []  # 3d point in real world space
@@ -83,7 +81,10 @@ class Calibrate:
 
         images = os.listdir(dirpath)
 
+
+        print("Forloop")
         for fname in images:
+            print(fname)
             img = cv.imread(os.path.join(dirpath, fname))
             gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
