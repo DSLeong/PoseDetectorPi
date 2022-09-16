@@ -18,33 +18,36 @@ class Calibrate:
         
         good = False
         while not good:
-            width = input('Please enter the width of the checkerboard: ')
+            width = input('Please enter the width of the checkerboard (mm): ')
             if not width.isnumeric():
                 print('Error: Please enter a number')
-            elif width <= 0:
+            elif int(width) <= 0:
                 print('Error: Please enter a positive number')
             else:
+                width = int(width)
                 good = True
 
 
         good = False
         while not good:
-            height = input('Please enter the height of the checkerboard: ')
+            height = input('Please enter the height of the checkerboard (mm): ')
             if not height.isnumeric():
                 print('Error: Please enter a number')
-            elif height <= 0:
+            elif int(height) <= 0:
                 print('Error: Please enter a positive number')
             else:
+                height = int(height)
                 good = True
        
         good = False
         while not good:
-            square_size = input('Please enter the size of the squares: ')
-            if not width.isnumeric():
+            square_size = input('Please enter the size of the squares (mm): ')
+            if not square_size.isnumeric():
                 print('Error: Please enter a number')
-            elif square_size <= 0:
+            elif int(square_size) <= 0:
                 print('Error: Please enter a positive number')
             else:
+                square_size = int(square_size)
                 good = True
     
         # 2.4 cm == 0.024 m
@@ -53,10 +56,8 @@ class Calibrate:
         good = False
         while not good:
             visualize = input('Visualise? True or False: ')
-            if visual.lower() is not "true" and visual.lower() is not "false":
+            if visual.lower() != "true" and visual.lower() != "false":
                 print('Error: Please enter a true or false')
-            elif visualize is not 1 and visualize is not 0:
-                print('Error: Please enter a positive number')
             else:
                 good = True
 

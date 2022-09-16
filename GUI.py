@@ -44,7 +44,7 @@ while running:
 
 	elif command == 1: #Calibration
 		print("CALIBRATION")
-		Calbriate.Calibrate()
+		Calibrate.Calibrate()
 	
 	elif command == 2: #Generate Tags
 		print("GENERATE TAGS")
