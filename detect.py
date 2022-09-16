@@ -3,7 +3,7 @@ import cv2
 import cv2.aruco as aruco
 import math
 
-from PanTilt import PanTilt as PanTilt
+#from PanTilt import PanTilt as PanTilt
 
 class PoseDetector:
     def isRotationMatrix(R):
@@ -61,7 +61,7 @@ class PoseDetector:
 
             corners, ids, rejected = aruco.detectMarkers(gray_frame, aruco_dict, camera_matrix, camera_distortion)
 
-            if ids is not None: 
+            if ids != None: 
             
                 aruco.drawDetectedMarkers(frame, corners)
             
@@ -84,8 +84,8 @@ class PoseDetector:
                 #pitch, roll, yaw 
                 eularX, eularY, eularZ = rotationMatrixToEulerAngles(rotation_matrix)
 
-                PanTilt.EyeInHand(x, y, z,eularX, eularY, eularZ)
-                PanTilt.Display(x, y, z,eularX, eularY, eularZ)
+                #PanTilt.EyeInHand(x, y, z,eularX, eularY, eularZ)
+                #PanTilt.Display(x, y, z,eularX, eularY, eularZ)
 
                 tvec_str = "x=%4.0f y=%4.0f z=%4.0f yaw=%4.0f"%(realworld_tvec[0], realworld_tvec[1], realworld_tvec[2], math.degrees(yaw))
                 
