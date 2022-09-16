@@ -5,7 +5,9 @@ This also implements the usage of a Pan-Tilt Hat for the Pi.
 
 Based on ArUco
 
-#LINK HERE
+https://github.com/GSNCodes/ArUCo-Markers-Pose-Estimation-Generation-Python
+
+
 
 #OTHER REFERENCES
 
