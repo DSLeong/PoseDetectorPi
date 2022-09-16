@@ -7,7 +7,7 @@ import tkinter as tk
 from   tkinter import filedialog
 
 class GenerateTags:
-    def __init__(self):
+    def GenerateTags():
         ap = argparse.ArgumentParser()
         #ap.add_argument("-o", "--output", required=True, help="path to output folder to save ArUCo tag")
         #ap.add_argument("-i", "--id", type=int, required=True, help="ID of ArUCo tag to generate")
@@ -23,18 +23,16 @@ class GenerateTags:
         print(dirpath)
 
         good = False
-        while good == False:
+        while not good:
             iden = input('Please enter the ID of ArUCo tag to generate: ')
             
             if ARUCO_DICT.get(args["type"], None) == None:
 	            print("ArUCo tag type '{args['type']}' is not supported")
-                continue
-
-            good = True
+            else:
+                good = True
 
         # Check to see if the dictionary is supported
         
-
         arucoDict = cv.aruco.Dictionary_get(ARUCO_DICT[args["type"]])
 
         print("Generating ArUCo tag of type '{}' with ID '{}'".format(args["type"], args["id"]))

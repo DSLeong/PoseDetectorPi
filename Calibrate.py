@@ -6,7 +6,7 @@ import tkinter as tk
 from   tkinter import filedialog
 
 class Calibrate:
-    def __init__(self):
+    def Calibrate():
 
         print('Please choose the folder where the checkerboard images are located')
         input('Press enter to continue')

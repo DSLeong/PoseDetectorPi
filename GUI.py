@@ -1,7 +1,7 @@
 #Initialise Modules
-import Calibrate
-import GenerateTags
-import detect
+from Calibrate import Calibrate as Calibrate
+from GenerateTags import GenerateTags as GenerateTags
+from detect import PoseDetector as PoseDetector
 
 
 #GUI Components
@@ -44,7 +44,7 @@ while running:
 
 	elif command == 1: #Calibration
 		print("CALIBRATION")
-		 Calbriate.__init__()
+		Calbriate.Calibrate()
 	
 	elif command == 2: #Generate Tags
 		print("GENERATE TAGS")
@@ -52,12 +52,12 @@ while running:
 
 	elif command == 3: #Eye to Hand
 		print("EYE TO HAND")
-		detect.poseDetector()
+		PoseDetector.poseDetector()
 
 	elif command == 4: #Eye in Hand
 		print("EYE IN HAND")
 		#Set Values
-		detect.poseDetector()
+		PoseDetector.poseDetector()
 
 	else: #ERROR
 		print("ERROR")

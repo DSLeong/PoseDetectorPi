@@ -107,3 +107,5 @@ class PanTilt:
         print("| EulZ: ",ez)
         print("|                          ")
         print("===========================")
+        print("|    Press 'q' to quit    |")
+        print("===========================")
