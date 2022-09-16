@@ -6,7 +6,7 @@ import tkinter as tk
 from   tkinter import filedialog
 
 class Calibrate:
-    def Calibrate():
+    def Calibration():
 
         print('Please choose the folder where the checkerboard images are located')
         input('Press enter to continue')
@@ -56,25 +56,16 @@ class Calibrate:
         good = False
         while not good:
             visualize = input('Visualise? True or False: ')
-            if visual.lower() != "true" and visual.lower() != "false":
+            if visualize.lower() != "true" and visualize.lower() != "false":
                 print('Error: Please enter a true or false')
             else:
                 good = True
 
         if visualize.lower() == "true":
             visualize = True
-        else:
+        elif visualize.lower() == "false":
             visualize = False
 
-        ret, mtx, dist, rvecs, tvecs = self.__calibrate(dirpath, square_size, visualize=visualize, width=width, height=height)
-
-        print(mtx)
-        print(dist)
-
-        np.save("calibration_matrix", mtx)
-        np.save("distortion_coefficients", dist)
-
-    def __calibrate(dirpath, square_size, width, height, visualize=False):
         """ Apply camera calibration operation for images in the given directory path. """
 
         # termination criteria
@@ -116,4 +107,8 @@ class Calibrate:
 
         ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
 
-        return [ret, mtx, dist, rvecs, tvecs]
+        print(mtx)
+        print(dist)
+
+        np.save("calibration_matrix", mtx)
+        np.save("distortion_coefficients", dist)
