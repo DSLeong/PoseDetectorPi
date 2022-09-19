@@ -8,65 +8,51 @@ from   tkinter import filedialog
 class Calibrate:
     def Calibration():
 
-        print('Please choose the folder where the checkerboard images are located')
-        input('Press enter to continue')
+        print("Please choose the folder where the checkerboard images are located:")
+        input("Press enter to continue")
         root = tk.Tk()
         root.withdraw()
         dirpath = filedialog.askdirectory()
         print(dirpath)
-
         
+        #Width of Checkerboard
         good = False
         while not good:
-            width = input('Please enter the width of the checkerboard (no. of squares): ')
+            width = input("Please enter the width of the checkerboard (no. of corners): ")
             if not width.isnumeric():
-                print('Error: Please enter a number')
+                print("Error: Please enter a number")
             elif int(width) <= 0:
-                print('Error: Please enter a positive number')
+                print("Error: Please enter a positive number")
             else:
                 width = int(width)
                 good = True
 
-
+        #Height of Checkerboard
         good = False
         while not good:
-            height = input('Please enter the height of the checkerboard (no. of squares): ')
+            height = input("Please enter the height of the checkerboard (no. of corners): ")
             if not height.isnumeric():
-                print('Error: Please enter a number')
+                print("Error: Please enter a number")
             elif int(height) <= 0:
-                print('Error: Please enter a positive number')
+                print("Error: Please enter a positive number")
             else:
                 height = int(height)
                 good = True
        
+        #Checkerboard square length
         good = False
         while not good:
-            square_size = input('Please enter the size of the squares (m): ')
+            square_size = input("Please enter the size of the squares (m): ")
             if not square_size.isnumeric():
-                print('Error: Please enter a number')
+                print("Error: Please enter a number")
             elif float(square_size) <= 0:
-                print('Error: Please enter a positive number')
+                print("Error: Please enter a positive number")
             else:
                 square_size = float(square_size)
                 good = True
-    
-        # 2.4 cm == 0.024 m
-        # square_size = 0.024
 
-        good = False
-        while not good:
-            visualize = input('Visualise? True or False: ')
-            if visualize.lower() != "true" and visualize.lower() != "false":
-                print('Error: Please enter a true or false')
-            else:
-                good = True
 
-        if visualize.lower() == "true":
-            visualize = True
-        elif visualize.lower() == "false":
-            visualize = False
-
-        """ Apply camera calibration operation for images in the given directory path. """
+        # Apply camera calibration operation for images in the given directory path.
 
         # termination criteria
         criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
@@ -82,9 +68,11 @@ class Calibrate:
         images = os.listdir(dirpath)
 
 
-        print("Forloop")
+        #Calibrate Images
+        print("Rendering Calibration")
         for fname in images:
             print(fname)
+
             img = cv.imread(os.path.join(dirpath, fname))
             gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
@@ -101,14 +89,17 @@ class Calibrate:
                 # Draw and display the corners
                 img = cv.drawChessboardCorners(img, (width, height), corners2, ret)
 
-            if visualize:
-                cv.imshow('img',img)
-                cv.waitKey(0)
+            #Display image with Calibration
+            print("Press any key to continue")
+            cv.imshow("img",img)
+            cv.waitKey(0)
 
-
+        #Save Calibration
         ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
 
+        print("Calibration Matrix:")
         print(mtx)
+        print("Distortion:")
         print(dist)
 
         np.save("calibration_matrix", mtx)

@@ -12,7 +12,7 @@ running = True
 while running:
 	#Get User Input + Error Testing
 	command = -1
-	while command < 0 or command > 3:
+	while command < 0 or command > 4:
 		print("=================================================")
 		print("|           Pose Detector using ArUco           |")
 		print("|              Created by Group 45              |")

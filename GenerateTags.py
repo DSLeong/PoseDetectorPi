@@ -15,8 +15,8 @@ class GenerateTags:
         ap.add_argument("-s", "--size", type=int, default=200, help="Size of the ArUCo tag")
         args = vars(ap.parse_args())
 
-        print('Please choose the directory where the ArUCo tag will be saved')
-        input('Press enter to continue')
+        print("Please choose the directory where the ArUCo tag will be saved")
+        input("Press enter to continue")
         root = tk.Tk()
         root.withdraw()
         dirpath = filedialog.askdirectory()
@@ -24,10 +24,10 @@ class GenerateTags:
 
         good = False
         while not good:
-            iden = input('Please enter the ID of ArUCo tag to generate: ')
+            iden = input("Please enter the ID of ArUCo tag to generate: ")
             
             if ARUCO_DICT.get(args["type"], None) == None:
-	            print("ArUCo tag type '{args['type']}' is not supported")
+                print('ArUCo tag type "{args["type"]}" is not supported')
             else:
                 good = True
 

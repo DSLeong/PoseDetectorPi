@@ -1,18 +1,18 @@
 import math
 import time
 
-#need to import
 import pantilthat
 
 class PanTilt:
 
-    debugPanTilt = true
+    debugEnablePanTilt = false
 
     #Reset To Default Posistion (Pan 0, Tilt 0)
     def reset():
         print("Reset")
-        pantilthat.pan(0)
-        pantilthat.tilt(0)
+        if debugEnablePanTilt:
+            pantilthat.pan(0)
+            pantilthat.tilt(0)
 
 
     #Eye to Hand (Stationary)
@@ -40,50 +40,67 @@ class PanTilt:
                 inputX, inputY, inputZ = int(inputX), int(inputY), int(inputZ)
         
 
-        if debugPanTilt:
+        if debugEnablePanTilt:
             #=============================
             #Pan
             #=============================
-            pan = get_servo_one()
+            pan = get_servo_one() + 1
             #ey is left?
             if ey >= 0 and ey < 180:
                 if y > inputY:
-                    if pan + 1 > 90 or pan + 1 < -90:
+                    if pan > 90 or pan < -90:
                         print("Error")
                     else:
-                        pantilthat.pan(pan + 1)
+                        pantilthat.pan(pan)
                 else:
-                    if pan + 1 > 90 or pan + 1 < -90:
+                    if pan > 90 or pan < -90:
                         print("Error")
                     else:
-                        pantilthat.pan(pan + 1)
+                        pantilthat.pan(pan)
 
             #ey is Right?
             else:
                 if y > inputY:
-                    if pan + 1 > 90 or pan + 1 < -90:
+                    if pan > 90 or pan < -90:
                         print("Error")
                     else:
-                        pantilthat.pan(pan + 1)
+                        pantilthat.pan(pan)
                 else:
-                    if pan + 1 > 90 or pan + 1 < -90:
+                    if pan > 90 or pan < -90:
                         print("Error")
                     else:
-                        pantilthat.pan(pan + 1)
+                        pantilthat.pan(pan)
 
 
             #=============================
             #Tilt
             #=============================
-            tilt = get_servo_two()
-            if ex > 90 or ex > 0:
-                if x < x:
-                    print("EyeInHand")
-                    #Keep Centre
+            tilt = get_servo_two() + 1
+            #ey is left?
+            if ey >= 0 and ey < 180:
+                if y > inputY:
+                    if tilt > 90 or tilt < -90:
+                        print("Error")
+                    else:
+                        pantilthat.tilt(tilt)
+                else:
+                    if tilt > 90 or tilt < -90:
+                        print("Error")
+                    else:
+                        pantilthat.tilt(tilt)
+
+            #ey is Right?
             else:
-                if x > x:
-                    print("EyeInHand")
-                    #Keep Centre
+                if y > inputY:
+                    if tilt > 90 or tilt < -90:
+                        print("Error")
+                    else:
+                        pantilthat.tilt(tilt)
+                else:
+                    if tilt > 90 or tilt < -90:
+                        print("Error")
+                    else:
+                        pantilthat.tilt(tilt)
 
         Display(x,y,z,ex,ey,ez)
 
@@ -107,5 +124,5 @@ class PanTilt:
         print("| EulZ: ",ez)
         print("|                          ")
         print("===========================")
-        print("|    Press 'q' to quit    |")
+        print("|   Press 'q' to return   |")
         print("===========================")
