@@ -65,7 +65,7 @@ class Calibrate:
                 print("Error: Please enter a positive number")
             else:
                 width = int(width)
-                print ("Width = " + str(width))
+                print("Width = " + str(width))
                 good = True
 
         #Height of Checkerboard
@@ -78,7 +78,7 @@ class Calibrate:
                 print("Error: Please enter a positive number")
             else:
                 height = int(height)
-                print ("Height = " + str(height))
+                print("Height = " + str(height))
                 good = True
        
         #Checkerboard square length
@@ -91,7 +91,7 @@ class Calibrate:
                 print("Error: Please enter a positive number")
             else:
                 square_size = float(square_size)/1000
-                print ("Square Size (m) = " + str(square_size))
+                print("Square Size (m) = " + str(square_size))
                 good = True
 
 

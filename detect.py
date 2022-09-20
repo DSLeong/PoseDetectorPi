@@ -1,7 +1,6 @@
 import numpy as np 
 import cv2
 import os
-#import cv2.aruco as aruco
 import math
 
 from PanTilt import PanTilt as PanTilt
@@ -35,7 +34,7 @@ class PoseDetector:
         
         return np.array([x, y, z]) #returns pitch, roll and yaw
 
-    def poseDetector(self):
+    def poseDetector(self, inputX, inputY, inputZ):
 
         #if Calibration does not exist
         if not os.path.isfile("calibration_matrix.npy") or not os.path.isfile("distortion_coefficients.npy"):
@@ -46,10 +45,6 @@ class PoseDetector:
         else:
             marker_size = 100
 
-            #with open('Calibrate.npy', 'rb') as f: 
-            #    camera_matrix = np.load(f)
-            #    camera_distortion = np.load(f)
-
             camera_matrix = np.load("calibration_matrix.npy")
             camera_distortion = np.load("distortion_coefficients.npy")
 
@@ -57,15 +52,10 @@ class PoseDetector:
 
             cap = cv2.VideoCapture(0)
 
-            #camera_width = 640
-            #camera_height = 480 
-            #camera_frame_rate = 40 
-
-            #cap.set(2, camera_width)
-            #cap.set(4, camera_height)
-            #cap.set(5, camera_frame_rate)
-
-            #check of 'in' or 'of'
+            follow = True
+            if inputX == None and inputY == None and inputZ == None:
+                follow = False
+                #PanTilt.reset()
 
             while True:
                 ret, frame = cap.read()
@@ -94,10 +84,14 @@ class PoseDetector:
                     x = realworld_tvec[0]
                     y = realworld_tvec[1]
                     z = realworld_tvec[2]
-                    #pitch, roll, yaw 
 
+                    #pitch, roll, yaw 
                     eularX, eularY, eularZ = self.rotationMatrixToEulerAngles(self, rotation_matrix)
-                    #PanTilt.EyeInHand(x, y, z, eularX, eularY, eularZ)
+
+                    if follow:
+                        print("Follow")
+                        #PanTilt.EyeInHand(x, y, z, math.degrees(eularX), math.degrees(eularY), math.degrees(eularZ))
+                    
                     PanTilt.Display(x, y, z, math.degrees(eularX), math.degrees(eularY), math.degrees(eularZ))
 
                     tvec_str = "x=%4.0f y=%4.0f z=%4.0f eularX=%4.0f"%(realworld_tvec[0], realworld_tvec[1], realworld_tvec[2], math.degrees(eularX))
