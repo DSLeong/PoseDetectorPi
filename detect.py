@@ -67,7 +67,7 @@ class PoseDetector:
 
             while True:
                 ret, frame = cap.read()
-                if PanTiltEnable: frame = cv.flip(frame,-1)
+                if PanTiltEnable: frame = cv2.flip(frame,-1)
 
                 gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 

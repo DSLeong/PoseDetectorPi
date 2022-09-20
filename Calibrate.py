@@ -32,7 +32,7 @@ class Calibrate:
         while True: 
             #reading camera frame
             ret, frame = cap.read()
-            if PanTiltEnable: frame = cv.flip(frame,-1)
+            if PanTiltEnable: frame = cv2.flip(frame,-1)
 
             #Capture Image
             frameCount += 1
