@@ -54,8 +54,8 @@ while running:
 			elif int(userInput) < 0 or int(userInput) > 1:
 				input("Please input from Command List.")
 			else:
+				command = int(userInput)
 				if int(userInput) == 1:
-					command = int(userInput)
 					Calibrate.camCapture()
 
 		Calibrate.Calibration()
