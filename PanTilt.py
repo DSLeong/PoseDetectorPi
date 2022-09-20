@@ -25,7 +25,7 @@ class PanTilt:
             #=============================
             #Pan
             #=============================
-            pan = get_pan()
+            pan = pantilthat.get_pan()
             if pan >= -90 and pan <= 90:
                 #Quadrant 1
                 if ez >= 90 and ez < 0:
@@ -62,7 +62,7 @@ class PanTilt:
             #=============================
             #Tilt
             #=============================
-            tilt = get_tilt()
+            tilt = pantilthat.get_tilt()
             if tilt >= -90 and tilt <= 90:
                 #Quadrant 1
                 if ez >= 90 and ez < 0:
