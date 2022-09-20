@@ -63,7 +63,7 @@ class PoseDetector:
             follow = True
             if inputX == None and inputY == None and inputZ == None:
                 follow = False
-                #PanTilt.reset()
+                PanTilt.reset()
 
             while True:
                 ret, frame = cap.read()
@@ -99,7 +99,7 @@ class PoseDetector:
 
                     if follow:
                         print("Follow")
-                        #PanTilt.EyeInHand(x, y, z, math.degrees(eularX), math.degrees(eularY), math.degrees(eularZ))
+                        PanTilt.EyeInHand(x, y, z, math.degrees(eularX), math.degrees(eularY), math.degrees(eularZ))
                     
                     PanTilt.Display(x, y, z, math.degrees(eularX), math.degrees(eularY), math.degrees(eularZ))
 
