@@ -6,6 +6,7 @@ from detect import PoseDetector as PoseDetector
 #GUI Components
 running = True
 
+
 #Program Start
 while running:
 	#Get User Input + Error Testing
@@ -55,7 +56,7 @@ while running:
 			else:
 				if int(userInput) == 1:
 					command = int(userInput)
-					Calibrate.camCapture()
+					Calibrate.camCapture(PanTiltEnable)
 
 		Calibrate.Calibration()
 	
@@ -65,7 +66,7 @@ while running:
 
 	elif command == 3: #Eye to Hand
 		print("EYE TO HAND")
-		PoseDetector.poseDetector(PoseDetector,None,None,None)
+		PoseDetector.poseDetector(PoseDetector, None, None, None)
 		input("Press Enter to continue")
 
 	elif command == 4: #Eye in Hand

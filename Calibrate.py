@@ -5,6 +5,13 @@ import argparse
 import tkinter as tk
 from   tkinter import filedialog
 
+PanTiltEnable = True
+try:
+    import pantilthat
+except ImportError:
+    PanTiltEnable = False
+    pass
+
 class Calibrate:
     def camCapture():
         capImageCount = 0
@@ -19,13 +26,14 @@ class Calibrate:
 
         print("Press 'q' on capture to stop")
 
-        cv2.namedWindow("Image Feed")
         cap = cv2.VideoCapture(0)
+        
 
         while True: 
             #reading camera frame
             ret, frame = cap.read()
-    
+            if PanTiltEnable: frame = cv.flip(frame,-1)
+
             #Capture Image
             frameCount += 1
 
@@ -42,7 +50,7 @@ class Calibrate:
             key = cv2.waitKey(1) & 0xFF 
             if key == ord("q"): break
 
-        print("Created " + capImageCount + " image/s")
+        print("Created " + str(capImageCount) + " image/s")
 
         cap.release()
         cv2.destroyAllWindows()

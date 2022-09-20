@@ -4,6 +4,13 @@ import os
 import math
 
 from PanTilt import PanTilt as PanTilt
+PanTiltEnable = True
+try:
+    import pantilthat
+except ImportError:
+    PanTiltEnable = False
+    pass
+
 
 class PoseDetector:
 
@@ -51,6 +58,7 @@ class PoseDetector:
             aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_100)
 
             cap = cv2.VideoCapture(0)
+            
 
             follow = True
             if inputX == None and inputY == None and inputZ == None:
@@ -59,6 +67,7 @@ class PoseDetector:
 
             while True:
                 ret, frame = cap.read()
+                if PanTiltEnable: frame = cv.flip(frame,-1)
 
                 gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 

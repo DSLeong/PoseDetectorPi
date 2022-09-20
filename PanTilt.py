@@ -1,15 +1,19 @@
 import math
 
-#import pantilthat
+
+PanTiltEnable = True
+try:
+    import pantilthat
+except ImportError:
+    PanTiltEnable = False
+    pass
 
 class PanTilt:
-
-    debugEnablePanTilt = False
 
     #Reset To Default Posistion (Pan 0, Tilt 0)
     def reset():
         print("Reset")
-        if debugEnablePanTilt:
+        if PanTiltEnable:
             pantilthat.pan(0)
             pantilthat.tilt(0)
 
@@ -17,7 +21,7 @@ class PanTilt:
     def EyeInHand(x,y,z,ex,ey,ez):
         print("EyeInHand")
 
-        if debugEnablePanTilt:
+        if PanTiltEnable:
             #=============================
             #Pan
             #=============================
