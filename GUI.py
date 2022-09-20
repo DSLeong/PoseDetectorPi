@@ -56,7 +56,7 @@ while running:
 			else:
 				if int(userInput) == 1:
 					command = int(userInput)
-					Calibrate.camCapture(PanTiltEnable)
+					Calibrate.camCapture()
 
 		Calibrate.Calibration()
 	
