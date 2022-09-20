@@ -41,6 +41,29 @@ class PoseDetector:
         
         return np.array([x, y, z]) #returns pitch, roll and yaw
 
+    #Display Pose
+    def Display(self,x,y,z,ex,ey,ez):
+        print("===========================")
+        print("|    Translation  (mm)    |")
+        print("===========================")
+        print("|                          ")
+        print("|  X (Red)  : {:4.0f}".format(x))
+        print("|  Y (Green): {:4.0f}".format(y))
+        print("|  Z (Blue) : {:4.0f}".format(z))
+        print("|                          ")
+        print("===========================")
+        print("|    Rotation  (Eular)    |")
+        print("===========================")
+        print("|                          ")
+        print("| EulX: {:4.0f}".format(ex))
+        print("| EulY: {:4.0f}".format(ey))
+        print("| EulZ: {:4.0f}".format(ez))
+        print("|                          ")
+        print("===========================")
+        print("|Press 'q' on cap  to stop|")
+        print("===========================")
+        print(" ")
+
     def poseDetector(self, inputX, inputY, inputZ):
 
         #if Calibration does not exist
@@ -64,6 +87,7 @@ class PoseDetector:
             if inputX == None and inputY == None and inputZ == None:
                 follow = False
                 PanTilt.reset()
+
 
             while True:
                 ret, frame = cap.read()
@@ -99,11 +123,11 @@ class PoseDetector:
 
                     if follow:
                         print("Follow")
-                        PanTilt.EyeInHand(x, y, z, math.degrees(eularX), math.degrees(eularY), math.degrees(eularZ))
+                        PanTilt.EyeInHand(x, y, z, math.degrees(eularX), math.degrees(eularY), math.degrees(eularZ),inputX,inputY,inputZ)
                     
-                    PanTilt.Display(x, y, z, math.degrees(eularX), math.degrees(eularY), math.degrees(eularZ))
+                    self.Display(self,x, y, z, math.degrees(eularX), math.degrees(eularY), math.degrees(eularZ))
 
-                    tvec_str = "x=%4.0f y=%4.0f z=%4.0f eularX=%4.0f"%(realworld_tvec[0], realworld_tvec[1], realworld_tvec[2], math.degrees(eularX))
+                    tvec_str = "x=%4.0f y=%4.0f z=%4.0f eularZ=%4.0f"%(x, y, z, math.degrees(eularZ))
                     cv2.putText(frame, tvec_str, (20, 460), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2, cv2.LINE_AA)
                 
                 cv2.imshow('Output', frame) 

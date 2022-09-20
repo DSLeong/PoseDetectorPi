@@ -143,10 +143,12 @@ class Calibrate:
             #Display image with Calibration
             cv2.imshow("Image Calibration",img)
             cv2.waitKey(1000)
-        
+
         cv2.destroyAllWindows()
+
         #Save Calibration
         ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
+
 
         print("Calibration Matrix:")
         print(mtx)

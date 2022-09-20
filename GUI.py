@@ -87,6 +87,7 @@ while running:
 			else:
 				inputNum = True
 
+
 		PoseDetector.poseDetector(PoseDetector, inputX, inputY, inputZ)
 		input("Press Enter to continue")
 
