@@ -1,11 +1,11 @@
 import math
 import time
 
-import pantilthat
+#import pantilthat
 
 class PanTilt:
 
-    debugEnablePanTilt = false
+    debugEnablePanTilt = False
 
     #Reset To Default Posistion (Pan 0, Tilt 0)
     def reset():
@@ -23,7 +23,8 @@ class PanTilt:
     #Eye in Hand (Follow)
     def EyeInHand(x,y,z,ex,ey,ez):
         print("EyeInHand")
-        
+        reset()
+
         inputX, inputY, inputZ = 0
         inputNum = false
 
@@ -107,22 +108,22 @@ class PanTilt:
 
     #Display Pose
     def Display(x,y,z,ex,ey,ez):
-        print("===========================")
+        print("\n===========================")
         print("|    Translation  (mm)    |")
         print("===========================")
         print("|                          ")
-        print("|  X: ",x)
-        print("|  Y: ",y)
-        print("|  Z: ",z)
+        print("|  X: {:4.0f}".format(x))
+        print("|  Y: {:4.0f}".format(y))
+        print("|  Z: {:4.0f}".format(z))
         print("|                          ")
         print("===========================")
         print("|    Rotation  (Eular)    |")
         print("===========================")
         print("|                          ")
-        print("| EulX: ",ex)
-        print("| EulY: ",ey)
-        print("| EulZ: ",ez)
+        print("| EulX: {:4.0f}".format(ex))
+        print("| EulY: {:4.0f}".format(ey))
+        print("| EulZ: {:4.0f}".format(ez))
         print("|                          ")
         print("===========================")
-        print("|   Press 'q' to return   |")
-        print("===========================")
+        print("|Press 'q' on cap  to stop|")
+        print("===========================\n")

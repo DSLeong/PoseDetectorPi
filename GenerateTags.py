@@ -1,4 +1,4 @@
-import cv2 as cv
+import cv2
 import numpy as np
 import argparse
 from utils import ARUCO_DICT
@@ -33,16 +33,16 @@ class GenerateTags:
 
         # Check to see if the dictionary is supported
         
-        arucoDict = cv.aruco.Dictionary_get(ARUCO_DICT[args["type"]])
+        arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[args["type"]])
 
         print("Generating ArUCo tag of type '{}' with ID '{}'".format(args["type"], args["id"]))
         tag_size = args["size"]
         tag = np.zeros((tag_size, tag_size, 1), dtype="uint8")
-        cv.aruco.drawMarker(arucoDict, args["id"], tag_size, tag, 1)
+        cv2.aruco.drawMarker(arucoDict, args["id"], tag_size, tag, 1)
 
         # Save the tag generated
         tag_name = '{args["output"]}/{args["type"]}_id_{args["id"]}.png'
-        cv.imwrite(tag_name, tag)
-        cv.imshow("ArUCo Tag", tag)
-        cv.waitKey(0)
-        cv.destroyAllWindows()
+        cv2.imwrite(tag_name, tag)
+        cv2.imshow("ArUCo Tag", tag)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()

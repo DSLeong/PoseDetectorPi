@@ -13,9 +13,10 @@ while running:
 	#Get User Input + Error Testing
 	command = -1
 	while command < 0 or command > 4:
-		print("=================================================")
+		print("\n=================================================")
 		print("|           Pose Detector using ArUco           |")
 		print("|              Created by Group 45              |")
+		print("|   https://github.com/DSLeong/PoseDetectorPi   |")
 		print("=================================================")
 		print("|                 Command  List                 |")
 		print("|                                               |")
@@ -44,6 +45,20 @@ while running:
 
 	elif command == 1: #Calibration
 		print("CALIBRATION")
+
+		command = -1
+		while command < 0 or command > 1:
+			userInput = input("Create Images (0:False 1:True)? ")
+
+			if not userInput.isnumeric():
+				print("Please input Numeric Value.")
+			elif int(userInput) < 0 or int(userInput) > 1:
+				print("Please input from Command List.")
+			else:
+				if int(userInput) == 1:
+					command == int(userInput)
+					Calibrate.camCapture()
+
 		Calibrate.Calibration()
 	
 	elif command == 2: #Generate Tags
@@ -52,12 +67,13 @@ while running:
 
 	elif command == 3: #Eye to Hand
 		print("EYE TO HAND")
-		PoseDetector.poseDetector()
+		PoseDetector.poseDetector(PoseDetector)
+		input("Press Enter to continue")
 
 	elif command == 4: #Eye in Hand
 		print("EYE IN HAND")
-		#Set Values
-		PoseDetector.poseDetector()
+		PoseDetector.poseDetector(PoseDetector)
+		input("Press Enter to continue")
 
 	else: #ERROR
 		print("ERROR")
