@@ -21,6 +21,8 @@ class PanTilt:
     def EyeInHand(x,y,z,ex,ey,ez,inputX,inputY,inputZ):
         print("EyeInHand")
 
+        #NEED TO CHECK VALUES
+
         if PanTiltEnable:
             #=============================
             #Pan
@@ -38,7 +40,6 @@ class PanTilt:
                 elif ez > 90 and ez < 180:
                     if x > inputX:
                         pantilthat.pan(pan - 1)
-                        time.sleep(0.005)
                     elif x < inputX:
                         pantilthat.pan(pan + 1)
 
