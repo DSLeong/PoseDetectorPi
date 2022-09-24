@@ -3,7 +3,9 @@ A Swinburne Final Year Project to develop a Pose Detector using OpenCV which can
 
 
 # ArUco
-Based on ArUco:
+Based on ArUco within OpenCV Contrib:
+
+https://docs.opencv.org/4.x/d9/d6d/tutorial_table_of_content_aruco.html
 
 https://github.com/GSNCodes/ArUCo-Markers-Pose-Estimation-Generation-Python
 
