@@ -1,47 +1,94 @@
+import argparse
 import cv2
 import numpy as np
-import argparse
-from utils import ARUCO_DICT
+import os
 import sys
 import tkinter as tk
 from   tkinter import filedialog
+from utils import ARUCO_DICT
+
 
 class GenerateTags:
-    def GenerateTags():
-        ap = argparse.ArgumentParser()
-        #ap.add_argument("-o", "--output", required=True, help="path to output folder to save ArUCo tag")
-        #ap.add_argument("-i", "--id", type=int, required=True, help="ID of ArUCo tag to generate")
-        ap.add_argument("-t", "--type", type=str, default="DICT_ARUCO_ORIGINAL", help="type of ArUCo tag to generate")
-        ap.add_argument("-s", "--size", type=int, default=200, help="Size of the ArUCo tag")
-        args = vars(ap.parse_args())
+    def __init__(self):
+        #Find/Create Directory (Maybe place within GUI?)
+        while True:
+            try:
+                userInput = int(input("Create Directory for Tag (0:False 1:True)? "))
+            except ValueError:
+                input("Please input Numeric Values.")
+            else:
+                if userInput < 0 or userInput > 1:
+                    input("Please input from Command List.")
+                else:
+                    if userInput == 1: #Create Directory
+                        dirName = "Tags"
+                        try:
+                            os.mkdir(dirName)
+                        except FileExistsError:
+                            print("Directory '" , dirName ,  "' already exists")
+                        else:
+                            print("Directory '" , dirName ,  "' Created")
 
-        print("Please choose the directory where the ArUCo tag will be saved")
-        input("Press enter to continue")
-        root = tk.Tk()
-        root.withdraw()
-        dirpath = filedialog.askdirectory()
-        print(dirpath)
+                        dirpath = os.path.join(os.getcwd(), dirName)
+                        print(dirpath)
+                        break
 
+                    elif userInput == 0: #Find Directory
+                        print("Please choose the directory where the ArUCo tag will be saved")
+                        input("Press enter to continue")
+                        root = tk.Tk()
+                        root.withdraw()
+                        dirpath = filedialog.askdirectory()
+                        print(dirpath)
+                        break
+                    else:
+                        print("ERROR")
+
+        #Type of ArUco Tag (Maybe have standard one e.g. DICT_5X5_100 or select of list)
         good = False
-        while not good:
-            iden = input("Please enter the ID of ArUCo tag to generate: ")
-            
-            if ARUCO_DICT.get(args["type"], None) == None:
-                print('ArUCo tag type "{args["type"]}" is not supported')
+        while good == False:
+            tagType = input("Please enter the type of ArUCo tag to generate: ")
+            if ARUCO_DICT.get(tagType) is None:
+                print("AruCo tag type 'tagType' is not supported")
             else:
                 good = True
 
-        # Check to see if the dictionary is supported
+        #ID of ArUco Tag (Need to check if exists within type
+        good = False
+        while not good:
+            try:
+                iden = int(input("Please enter the ID of ArUCo tag to generate: "))
+            except ValueError:
+                input("Please input Numeric Values.")
+            else:
+                if iden <= 0:
+                    print("Error: Please enter a positive number")
+                else:
+                    good = True
         
-        arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[args["type"]])
+        #Size of Tag (pixel) or just have sets of values or standard value
+        good = False
+        while good == False:
+            try:
+                size = int(input("Please enter the size of ArUCo tag to generate (pixel): "))
+            except ValueError:
+                input("Please input Numeric Values.")
+            else:
+                if size <= 0:
+                    print("Error: Please enter a positive number")
+                else:
+                    good = True
 
-        print("Generating ArUCo tag of type '{}' with ID '{}'".format(args["type"], args["id"]))
-        tag_size = args["size"]
+        # Check to see if the dictionary is supported
+        arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[tagType])
+
+        print("Generating ArUCo tag of type '{}' with ID '{}'".format(tagType, iden))
+        tag_size = size
         tag = np.zeros((tag_size, tag_size, 1), dtype="uint8")
-        cv2.aruco.drawMarker(arucoDict, args["id"], tag_size, tag, 1)
+        cv2.aruco.drawMarker(arucoDict, iden, tag_size, tag, 1)
 
         # Save the tag generated
-        tag_name = '{args["output"]}/{args["type"]}_id_{args["id"]}.png'
+        tag_name = f'{dirpath}/{tagType}_id_{iden}.png'
         cv2.imwrite(tag_name, tag)
         cv2.imshow("ArUCo Tag", tag)
         cv2.waitKey(0)

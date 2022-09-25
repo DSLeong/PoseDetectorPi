@@ -21,7 +21,7 @@ class PanTilt:
     def EyeInHand(x,y,z,ex,ey,ez,inputX,inputY,inputZ):
         print("EyeInHand")
 
-        #NEED TO CHECK VALUES
+        #TESTING STILL NEEDED
 
         if PanTiltEnable:
             #=============================

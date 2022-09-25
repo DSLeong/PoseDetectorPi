@@ -1,7 +1,8 @@
-import numpy as np
-import cv2
-import os
 import argparse
+import cv2
+import numpy as np
+import os
+import time
 import tkinter as tk
 from   tkinter import filedialog
 
@@ -13,22 +14,51 @@ except ImportError:
     pass
 
 class Calibrate:
-    def camCapture():
-        capImageCount = 0
-        frameCount = 0
 
-        print("Please choose the folder where to save checkerboard images:")
-        input("Press enter to continue")
-        root = tk.Tk()
-        root.withdraw()
-        dirpath = filedialog.askdirectory()
-        print(dirpath)
+    #Produce Images from Camera for Calibration
+    def camCapture():
+        #Find/Create Directory (Maybe place within GUI?)
+        while True:
+            try:
+                userInput = int(input("Create Directory for Images (0:False 1:True)? "))
+            except ValueError:
+                input("Please input Numeric Values.")
+            else:
+                if userInput < 0 or userInput > 1:
+                    input("Please input from Command List.")
+                else:
+                    if userInput == 1: #Create Directory
+                        dirName = "Capture"
+                        try:
+                            os.mkdir(dirName)
+                        except FileExistsError:
+                            print("Directory '" , dirName ,  "' already exists")
+                        else:
+                            print("Directory '" , dirName ,  "' Created")
+
+                        dirpath = os.path.join(os.getcwd(), dirName)
+                        print(dirpath)
+                        break
+
+                    elif userInput == 0: #Find Directory
+                        print("Please choose the folder where to save checkerboard images:")
+                        input("Press enter to continue")
+                        root = tk.Tk()
+                        root.withdraw()
+                        dirpath = filedialog.askdirectory()
+                        print(dirpath)
+                        break
+                    else:
+                        print("ERROR")
+
 
         print("Press 'q' on capture to stop")
 
-        cap = cv2.VideoCapture(0)
+        capImageCount = 0
+        frameCount = 0
         
-
+        timeStart = time.time()
+        cap = cv2.VideoCapture(0)
         while True: 
             #reading camera frame
             ret, frame = cap.read()
@@ -45,62 +75,98 @@ class Calibrate:
                 frameCount = 0
             
             #Display Video
-            cv2.imshow("Image Feed", frame)
+            cv2.imshow("Image Feed - Press 'q' to stop", frame)
     
             key = cv2.waitKey(1) & 0xFF 
             if key == ord("q"): break
 
-        print("Created " + str(capImageCount) + " image/s")
-
         cap.release()
         cv2.destroyAllWindows()
 
+        elapseTime = time.time() - timeStart
+        print("Created " + str(capImageCount) + " image/s")
+        print("Elapsed Time for Image Creation: " + str(elapseTime) + " seconds")
+
+
+
+    #Calibration of Camera
     def Calibration():
-        print("Please choose the folder where the checkerboard images are located:")
-        input("Press enter to continue")
-        root = tk.Tk()
-        root.withdraw()
-        dirpath = filedialog.askdirectory()
-        print(dirpath)
+        #Find/Create Directory (Maybe place within GUI?)
+        while True:
+            try:
+                userInput = int(input("Find Directory for Calibration (0:False 1:True)? "))
+            except ValueError:
+                input("Please input Numeric Values.")
+            else:
+                if userInput < 0 or userInput > 1:
+                    input("Please input from Command List.")
+                else:
+                    if userInput == 1: #Create Directory
+                        dirName = "Capture"
+                        try:
+                            os.mkdir(dirName)
+                        except FileExistsError:
+                            print("Directory '" , dirName ,  "' already exists")
+                        else:
+                            print("Directory '" , dirName ,  "' Created")
+
+                        dirpath = os.path.join(os.getcwd(), dirName)
+                        print(dirpath)
+                        break
+
+                    elif userInput == 0: #Find Directory
+                        print("Please choose the folder where the checkerboard images are located:")
+                        input("Press enter to continue")
+                        root = tk.Tk()
+                        root.withdraw()
+                        dirpath = filedialog.askdirectory()
+                        print(dirpath)
+                        break
+                    else:
+                        print("ERROR")
+
         
         #Width of Checkerboard
         good = False
         while not good:
-            width = input("Please enter the width of the checkerboard (no. of corners): ")
-            if not width.isnumeric():
-                print("Error: Please enter a number")
-            elif int(width) <= 0:
-                print("Error: Please enter a positive number")
+            try:
+                width = int(input("Please enter the width of the checkerboard (no. of corners): "))
+            except ValueError:
+                input("Please input Numeric Value.")
             else:
-                width = int(width)
-                print("Width = " + str(width))
-                good = True
+                if width <= 0:
+                    print('Error: Please enter a positive number')
+                else:
+                    print("Width = " + str(width))
+                    break
 
         #Height of Checkerboard
         good = False
         while not good:
-            height = input("Please enter the height of the checkerboard (no. of corners): ")
-            if not height.isnumeric():
-                print("Error: Please enter a number")
-            elif int(height) <= 0:
-                print("Error: Please enter a positive number")
+            try:
+                height = int(input("Please enter the height of the checkerboard (no. of corners): "))
+            except ValueError:
+                input("Please input Numeric Value.")
             else:
-                height = int(height)
-                print("Height = " + str(height))
-                good = True
+                if height <= 0:
+                    print('Error: Please enter a positive number')
+                else:
+                    print("Height = " + str(height))
+                    break
        
         #Checkerboard square length
         good = False
         while not good:
-            square_size = input("Please enter the size of the squares (mm): ")
-            if not square_size.isnumeric():
-                print("Error: Please enter a number")
-            elif float(square_size) <= 0:
-                print("Error: Please enter a positive number")
+            try:
+                square_size = float(input("Please enter the size of the squares (mm): "))
+            except ValueError:
+                input("Please input Numeric Value.")
             else:
-                square_size = float(square_size)/1000
-                print("Square Size (m) = " + str(square_size))
-                good = True
+                if square_size <= 0:
+                    print('Error: Please enter a positive number')
+                else:
+                    print("Square Size (mm) = " + str(square_size))
+                    break
 
 
         # Apply camera calibration operation for images in the given directory path.
@@ -121,8 +187,9 @@ class Calibrate:
 
         #Calibrate Images
         print("Rendering Calibration")
+        usableImages = 0
         for fname in images:
-            print(fname + "\n")
+            print(fname)
 
             img = cv2.imread(os.path.join(dirpath, fname))
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -132,6 +199,7 @@ class Calibrate:
 
             # If found, add object points, image points (after refining them)
             if ret:
+                usableImages += 1
                 objpoints.append(objp)
 
                 corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
@@ -140,17 +208,24 @@ class Calibrate:
                 # Draw and display the corners
                 img = cv2.drawChessboardCorners(img, (width, height), corners2, ret)
 
-            #Display image with Calibration
+            #Display image with Calibration (May not need)
             cv2.imshow("Image Calibration",img)
             cv2.waitKey(1000)
 
         cv2.destroyAllWindows()
+        
 
-        #Save Calibration
+        #Calibration of Camera
+        print("\nCalibrating Camera using Images - Please Wait")
+        timeStart = time.time()
         ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
+        elapseTime = time.time() - timeStart
+        
 
+        print("Elapsed Time for Calibration: " + str(elapseTime) + " seconds")
+        print("Amount of Used Images: " + str(usableImages) + " out of " + str(len(images)))
 
-        print("Calibration Matrix:")
+        print("\nCalibration Matrix:")
         print(mtx)
         print("\nDistortion:")
         print(dist)

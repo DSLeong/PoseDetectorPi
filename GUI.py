@@ -1,17 +1,15 @@
 #Initialise Modules
 from Calibrate import Calibrate as Calibrate
 from GenerateTags import GenerateTags as GenerateTags
-from detect import PoseDetector as PoseDetector
+from PoseDetector import PoseDetector as PoseDetector
 
 #GUI Components
 running = True
 
-
 #Program Start
 while running:
 	#Get User Input + Error Testing
-	command = -1
-	while command < 0 or command > 4:
+	while True:
 		print("\n=================================================")
 		print("|           Pose Detector using ArUco           |")
 		print("|              Created by Group 45              |")
@@ -27,14 +25,15 @@ while running:
 		print("|                                               |")
 		print("=================================================")
 
-		userInput = input("Command? ")
-
-		if not userInput.isnumeric():
-			print("Please input Numeric Value.")
-		elif int(userInput) < 0 or int(userInput) > 4:
-			input("Please input from Command List.")
+		try:
+			userInput = int(input("Command? "))
+		except ValueError:
+			input("Please input Numeric Values.")
 		else:
-			command = int(userInput)
+			if command < 0 or command > 4:
+				input("Please input from Command List.")
+			else:
+				break
 		
 
 	#Switch for Modules
@@ -45,24 +44,24 @@ while running:
 	elif command == 1: #Calibration
 		print("CALIBRATION")
 
-		command = -1
-		while command < 0 or command > 1:
-			userInput = input("Create Images (0:False 1:True)? ")
-
-			if not userInput.isnumeric():
-				print("Please input Numeric Value.")
-			elif int(userInput) < 0 or int(userInput) > 1:
-				input("Please input from Command List.")
+		while True:
+			try:
+				userInput = int(input("Create Images (0:False 1:True)? "))
+			except ValueError:
+				input("Please input Numeric Values.")
 			else:
-				command = int(userInput)
-				if int(userInput) == 1:
-					Calibrate.camCapture()
+				if userInput < 0 or userInput > 1:
+					input("Please input from Command List.")
+				else:
+					if userInput == 1:
+						Calibrate.camCapture()
+					break
 
 		Calibrate.Calibration()
 	
 	elif command == 2: #Generate Tags
 		print("GENERATE TAGS")
-		GenerateTags.GenerateTags()
+		GenerateTags()
 
 	elif command == 3: #Eye to Hand
 		print("EYE TO HAND")
@@ -71,11 +70,8 @@ while running:
 
 	elif command == 4: #Eye in Hand
 		print("EYE IN HAND")
-		inputX, inputY, inputZ = 0, 0, 0
-		inputNum = False
 
-        #Program to follow
-		while not inputNum:
+		while True:
 			try:
 				print("Set Values:")
 				inputX = int(input("x: "))
@@ -83,16 +79,15 @@ while running:
 				inputZ = int(input("z: "))
 			except ValueError:
 				input("Please input Numeric Values.")
-				continue
 			else:
-				inputNum = True
-
+				break
 
 		PoseDetector.poseDetector(PoseDetector, inputX, inputY, inputZ)
 		input("Press Enter to continue")
 
-	else: #ERROR
-		print("ERROR")
+	#ERROR CASE
+	else:
+		input("ERROR")
 
 
 print("EXITED VIA COMMAND")
