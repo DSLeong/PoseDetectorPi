@@ -49,7 +49,7 @@ class GenerateTags:
         while good == False:
             tagType = input("Please enter the type of ArUCo tag to generate: ")
             if ARUCO_DICT.get(tagType) is None:
-                print(f"AruCo tag type 'tagType' is not supported")
+                print("AruCo tag type 'tagType' is not supported")
             else:
                 good = True
 

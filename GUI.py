@@ -1,17 +1,15 @@
 #Initialise Modules
 from Calibrate import Calibrate as Calibrate
 from GenerateTags import GenerateTags as GenerateTags
-from detect import PoseDetector as PoseDetector
+from PoseDetector import PoseDetector as PoseDetector
 
 #GUI Components
 running = True
 
-
 #Program Start
 while running:
 	#Get User Input + Error Testing
-	command = -1
-	while command < 0 or command > 4:
+	while True:
 		print("\n=================================================")
 		print("|           Pose Detector using ArUco           |")
 		print("|              Created by Group 45              |")
@@ -32,7 +30,10 @@ while running:
 		except ValueError:
 			input("Please input Numeric Values.")
 		else:
-			command = userInput
+			if command < 0 or command > 4:
+				input("Please input from Command List.")
+			else:
+				break
 		
 
 	#Switch for Modules
@@ -69,9 +70,7 @@ while running:
 
 	elif command == 4: #Eye in Hand
 		print("EYE IN HAND")
-		inputX, inputY, inputZ = 0, 0, 0
 
-        #Program to follow
 		while True:
 			try:
 				print("Set Values:")
@@ -86,9 +85,9 @@ while running:
 		PoseDetector.poseDetector(PoseDetector, inputX, inputY, inputZ)
 		input("Press Enter to continue")
 
-	#Other Values
+	#ERROR CASE
 	else:
-		input("Please input from Command List.")
+		input("ERROR")
 
 
 print("EXITED VIA COMMAND")

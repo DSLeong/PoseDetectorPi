@@ -85,7 +85,7 @@ class Calibrate:
 
         elapseTime = time.time() - timeStart
         print("Created " + str(capImageCount) + " image/s")
-        print("Elapsed Time for Calibration: " + str(elapseTime) + " seconds")
+        print("Elapsed Time for Image Creation: " + str(elapseTime) + " seconds")
 
 
 
@@ -165,8 +165,6 @@ class Calibrate:
                 if square_size <= 0:
                     print('Error: Please enter a positive number')
                 else:
-                    #Convert mm to m
-                    #square_size = float(square_size/1000)
                     print("Square Size (mm) = " + str(square_size))
                     break
 

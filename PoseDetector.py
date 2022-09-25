@@ -22,6 +22,7 @@ class PoseDetector:
         n = np.linalg.norm(I - shouldBeIdentity)
         return n < 1e-6
 
+
     #Convert Rotation 3x3 Matrix to euler Angles 
     def rotationMatrixToEulerAngles(self, R):
         assert (self.isRotationMatrix(R))
@@ -40,6 +41,7 @@ class PoseDetector:
             z = 0
         
         return np.array([x, y, z]) #returns pitch, roll and yaw (units?)
+
 
     #Display Pose
     def Display(self,x,y,z,ex,ey,ez):
@@ -63,6 +65,7 @@ class PoseDetector:
         print("|Press 'q' on cap  to stop|")
         print("===========================")
         print(" ")
+
 
     #Estimate Pose Values
     def poseDetector(self, inputX, inputY, inputZ):
