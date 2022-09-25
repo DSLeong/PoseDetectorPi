@@ -138,7 +138,7 @@ class PoseDetector:
                     y = realworld_tvec[1]
                     z = realworld_tvec[2]
 
-                    #Euler Angels (degree)
+                    #Euler Angles (degree)
                     eulerX, eulerY, eulerZ = self.rotationMatrixToEulerAngles(self, rotation_matrix)
 
                     #If Eye in Hand
