@@ -27,14 +27,12 @@ while running:
 		print("|                                               |")
 		print("=================================================")
 
-		userInput = input("Command? ")
-
-		if not userInput.isnumeric():
-			print("Please input Numeric Value.")
-		elif int(userInput) < 0 or int(userInput) > 4:
-			input("Please input from Command List.")
+		try:
+			userInput = int(input("Command? "))
+		except ValueError:
+			input("Please input Numeric Values.")
 		else:
-			command = int(userInput)
+			command = userInput
 		
 
 	#Switch for Modules
@@ -45,24 +43,24 @@ while running:
 	elif command == 1: #Calibration
 		print("CALIBRATION")
 
-		command = -1
-		while command < 0 or command > 1:
-			userInput = input("Create Images (0:False 1:True)? ")
-
-			if not userInput.isnumeric():
-				print("Please input Numeric Value.")
-			elif int(userInput) < 0 or int(userInput) > 1:
-				input("Please input from Command List.")
+		while True:
+			try:
+				userInput = int(input("Create Images (0:False 1:True)? "))
+			except ValueError:
+				input("Please input Numeric Values.")
 			else:
-				command = int(userInput)
-				if int(userInput) == 1:
-					Calibrate.camCapture()
+				if userInput < 0 or userInput > 1:
+					input("Please input from Command List.")
+				else:
+					if userInput == 1:
+						Calibrate.camCapture()
+					break
 
 		Calibrate.Calibration()
 	
 	elif command == 2: #Generate Tags
 		print("GENERATE TAGS")
-		GenerateTags.GenerateTags()
+		GenerateTags()
 
 	elif command == 3: #Eye to Hand
 		print("EYE TO HAND")
@@ -72,10 +70,9 @@ while running:
 	elif command == 4: #Eye in Hand
 		print("EYE IN HAND")
 		inputX, inputY, inputZ = 0, 0, 0
-		inputNum = False
 
         #Program to follow
-		while not inputNum:
+		while True:
 			try:
 				print("Set Values:")
 				inputX = int(input("x: "))
@@ -83,16 +80,15 @@ while running:
 				inputZ = int(input("z: "))
 			except ValueError:
 				input("Please input Numeric Values.")
-				continue
 			else:
-				inputNum = True
-
+				break
 
 		PoseDetector.poseDetector(PoseDetector, inputX, inputY, inputZ)
 		input("Press Enter to continue")
 
-	else: #ERROR
-		print("ERROR")
+	#Other Values
+	else:
+		input("Please input from Command List.")
 
 
 print("EXITED VIA COMMAND")
