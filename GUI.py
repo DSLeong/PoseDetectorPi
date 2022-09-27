@@ -26,7 +26,7 @@ while running:
 		print("=================================================")
 
 		try:
-			userInput = int(input("Command? "))
+			command = int(input("Command? "))
 		except ValueError:
 			input("Please input Numeric Values.")
 		else:

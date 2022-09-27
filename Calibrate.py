@@ -17,7 +17,7 @@ class Calibrate:
 
     #Produce Images from Camera for Calibration
     def camCapture():
-        #Find/Create Directory (Maybe place within GUI?)
+        #Find/Create Directory
         while True:
             try:
                 userInput = int(input("Create Directory for Images (0:False 1:True)? "))
@@ -91,7 +91,7 @@ class Calibrate:
 
     #Calibration of Camera
     def Calibration():
-        #Find/Create Directory (Maybe place within GUI?)
+        #Find/Create Directory
         while True:
             try:
                 userInput = int(input("Find Directory for Calibration (0:False 1:True)? "))
