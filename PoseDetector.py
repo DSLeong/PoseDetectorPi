@@ -115,7 +115,7 @@ class PoseDetector:
             cap = cv2.VideoCapture(cameraList["index"])
             cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraList["width"])
             cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraList["height"])
-            cap.set(cv2.CAP_FPS, cameraList["fps"])
+            cap.set(cv2.CAP_PROP_FPS, cameraList["fps"])
 
             while True:
                 ret, frame = cap.read()
