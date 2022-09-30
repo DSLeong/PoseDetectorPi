@@ -9,9 +9,6 @@ running = True
 
 class GUI:
 	def __init__(self):
-		self.GUI()
-	
-	def GUI(self):
 		#Program Start
 		while running:
 			#Get User Input + Error Testing
