@@ -16,7 +16,7 @@ except ImportError:
 class Calibrate:
 
     #Produce Images from Camera for Calibration
-    def camCapture():
+    def camCapture(cameraList):
         #Find/Create Directory
         while True:
             try:
@@ -54,11 +54,12 @@ class Calibrate:
 
         print("Press 'q' on capture to stop")
 
-        capImageCount = 0
-        frameCount = 0
-        
+        cap = cv2.VideoCapture(cameraList["index"])
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraList["width"])
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraList["height"])
+        cap.set(cv2.CAP_FPS, cameraList["fps"])
+
         timeStart = time.time()
-        cap = cv2.VideoCapture(0)
         while True: 
             #reading camera frame
             ret, frame = cap.read()
@@ -87,7 +88,8 @@ class Calibrate:
         print("Created " + str(capImageCount) + " image/s")
         print("Elapsed Time for Image Creation: " + str(elapseTime) + " seconds")
 
-
+    #=======================================================================================================================
+	#=======================================================================================================================
 
     #Calibration of Camera
     def Calibration():
@@ -183,7 +185,7 @@ class Calibrate:
         imgpoints = []  # 2d points in image plane.
 
         images = os.listdir(dirpath)
-
+        
 
         #Calibrate Images
         print("Rendering Calibration")
