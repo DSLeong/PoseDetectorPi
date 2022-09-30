@@ -9,7 +9,7 @@ from utils import ARUCO_DICT
 
 
 class GenerateTags:
-    def __init__(self, tagType):
+    def __init__(self, TagSettings):
         #Find/Create Directory (Maybe place within GUI?)
         while True:
             try:
@@ -73,7 +73,7 @@ class GenerateTags:
                     good = True
 
         # Check to see if the dictionary is supported
-        arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[tagType])
+        arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[TagSettings["tagType"]])
 
         print("Generating ArUCo tag of type '{}' with ID '{}'".format(tagType, iden))
         tag_size = size
