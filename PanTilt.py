@@ -18,84 +18,32 @@ class PanTilt:
             pantilthat.tilt(0)
 
     #Eye in Hand (Follow)
-    def EyeInHand(x,y,z,ex,ey,ez,inputX,inputY,inputZ):
+    def EyeInHand(x, y, z, ex, ey, ez, inputEX, inputEY, inputEZ):
         print("EyeInHand")
 
         #TESTING STILL NEEDED
 
         if PanTiltEnable:
-            #=============================
-            #Pan
-            #=============================
             pan = pantilthat.get_pan()
             if pan > -90 and pan < 90:
-                #Quadrant 1
-                if ez > 0 and ez <= 90:
-                    if y > inputY:
-                        pantilthat.pan(pan + 1)
-                    elif y < inputY:
-                        pantilthat.pan(pan - 1)
-
-                #Quadrant 2
-                elif ez > 90 and ez < 180:
-                    if x > inputX:
-                        pantilthat.pan(pan - 1)
-                    elif x < inputX:
-                        pantilthat.pan(pan + 1)
-
-                #Quadrant 3
-                elif ez > -180 and ez <= -90:
-                    if y > inputY:
-                        pantilthat.pan(pan - 1)
-                    elif y < inputY:
-                        pantilthat.pan(pan + 1)
-
-                #Quadrant 4
-                elif ez > -90 and ez <= 0:
-                    if x > inputX:
-                        pantilthat.pan(pan + 1)
-                    elif x < inputX:
-                        pantilthat.pan(pan - 1)
-
+                if ey > inputEY:
+                    pantilthat.pan(pan + 1)
+                elif ey < inputEY:
+                    pantilthat.pan(pan - 1)
             else:
                 pantilthat.pan(pan)
             
             time.sleep(0.005)
-
 
             #=============================
             #Tilt
             #=============================
             tilt = pantilthat.get_tilt()
             if tilt > -90 and tilt < 90:
-                #Quadrant 1
-                if ez > 0 and ez <= 90:
-                    if x > inputX:
-                        pantilthat.tilt(tilt + 1)
-                    elif x < inputX:
-                        pantilthat.tilt(tilt - 1)
-
-                #Quadrant 2
-                elif ez > 90 and ez < 180:
-                    if y > inputY:
-                        pantilthat.tilt(tilt - 1)
-                    elif y < inputY:
-                        pantilthat.tilt(tilt + 1)
-
-                #Quadrant 3
-                elif ez > -180 and ez <= -90:
-                    if x > inputX:
-                        pantilthat.tilt(tilt - 1)
-                    elif x < inputX:
-                        pantilthat.tilt(tilt + 1)
-
-                #Quadrant 4
-                elif ez > -90 and ez <= 0:
-                    if y > inputY:
-                        pantilthat.tilt(tilt + 1)
-                    elif y < inputY:
-                        pantilthat.tilt(tilt - 1)
-
+                if ex > inputEX:
+                    pantilthat.tilt(tilt + 1)
+                elif ex < inputEX:
+                    pantilthat.tilt(tilt - 1)
             else:
                 pantilthat.tilt(tilt)
             

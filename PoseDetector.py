@@ -70,7 +70,7 @@ class PoseDetector:
 
 
     #Estimate Pose Values
-    def poseDetector(self, inputX, inputY, inputZ, tagSetting, cameraList):
+    def poseDetector(self, inputEX, inputEY, inputEZ, tagSetting, cameraList):
 
         #if Calibration does not exist
         if not os.path.isfile("calibration_matrix.npy") or not os.path.isfile("distortion_coefficients.npy"):
@@ -173,7 +173,7 @@ class PoseDetector:
 
                     #If Eye in Hand
                     if follow:
-                        PanTilt.EyeInHand(x, y, z, math.degrees(eulerX), math.degrees(eulerY), math.degrees(eulerZ), inputX, inputY, inputZ)
+                        PanTilt.EyeInHand(x, y, z, math.degrees(eulerX), math.degrees(eulerY), math.degrees(eulerZ), inputEX, inputEY, inputEZ)
                     
                     #Display on Command Prompt
                     self.Display(self,x, y, z, math.degrees(eulerX), math.degrees(eulerY), math.degrees(eulerZ))

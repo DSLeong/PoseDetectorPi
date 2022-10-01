@@ -235,9 +235,9 @@ while running:
 			try:
 				print("\n=================================================")
 				print("Set Values:")
-				inputX = int(input("x: "))
-				inputY = int(input("y: "))
-				inputZ = int(input("z: "))
+				inputEX = int(input("Euler X: "))
+				inputEY = int(input("Euler Y: "))
+				inputEZ = int(input("Euler Z: "))
 			except ValueError:
 				input("Please input Numeric Values.")
 			else:
@@ -245,7 +245,7 @@ while running:
 
 		cameraList = getCameras()
 		tagSetting = setTag()
-		PoseDetector.poseDetector(PoseDetector, inputX, inputY, inputZ, tagSetting, cameraList)
+		PoseDetector.poseDetector(PoseDetector, inputEX, inputEY, inputEZ, tagSetting, cameraList)
 		input("Press Enter to continue")
 		#ERROR CASE
 	else:
