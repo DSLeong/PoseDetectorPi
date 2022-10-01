@@ -2,15 +2,8 @@ import cv2
 import math
 import numpy as np
 import os
-from utils import ARUCO_DICT
-
 from PanTilt import PanTilt as PanTilt
-PanTiltEnable = True
-try:
-    import pantilthat
-except ImportError:
-    PanTiltEnable = False
-    pass
+from utils import ARUCO_DICT
 
 
 class PoseDetector:
@@ -92,6 +85,7 @@ class PoseDetector:
             #Get Marker Size
             while True:
                 try:
+                    print("\n=================================================")
                     marker_size = float(input("Please enter the size of the squares (mm):  "))
                 except ValueError:
                     input("Please input Numeric Values.")
@@ -106,10 +100,30 @@ class PoseDetector:
             camera_distortion = np.load("distortion_coefficients.npy")
 
             #Eye in hand?
-            follow = True
-            if PanTiltEnable: PanTilt.reset()
+            follow = False
+            flip = False
+            while True:
+                try:
+                    print("\n=================================================")
+                    userInput = int(input("Enable Pan Tilt? (0:False 1:True)? "))
+                except ValueError:
+                    input("Please input Numeric Values.")
+                else:
+                    if userInput < 0 or userInput > 1:
+                        input("Please input from Command List.")
+                    else:
+                        if userInput == 0:
+                            follow = False
+                            flip = False
+                        else:
+                            follow = True
+                            flip = True
+                        PanTilt.reset()
+                        break
+
             if inputX == None and inputY == None and inputZ == None:
                 follow = False
+            
             
             #Check for camera (Usually 0)
             cap = cv2.VideoCapture(cameraList["index"])
@@ -119,7 +133,7 @@ class PoseDetector:
 
             while True:
                 ret, frame = cap.read()
-                if PanTiltEnable: frame = cv2.flip(frame,-1)
+                if flip: frame = cv2.flip(frame,-1)
 
                 gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -159,15 +173,14 @@ class PoseDetector:
 
                     #If Eye in Hand
                     if follow:
-                        print("Follow")
-                        if PanTiltEnable: PanTilt.EyeInHand(x, y, z, math.degrees(eulerX), math.degrees(eulerY), math.degrees(eulerZ),inputX,inputY,inputZ)
+                        PanTilt.EyeInHand(x, y, z, math.degrees(eulerX), math.degrees(eulerY), math.degrees(eulerZ), inputX, inputY, inputZ)
                     
                     #Display on Command Prompt
                     self.Display(self,x, y, z, math.degrees(eulerX), math.degrees(eulerY), math.degrees(eulerZ))
 
                     #Display on output
                     tvec_str = "x=%4.0f y=%4.0f z=%4.0f eulerZ=%4.0f"%(x, y, z, math.degrees(eulerZ))
-                    cv2.putText(frame, tvec_str, (20, 460), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2, cv2.LINE_AA)
+                    cv2.putText(frame, tvec_str, (20, 40), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2, cv2.LINE_AA)
                 
                 cv2.imshow("Pose Estimation - Press 'q' to stop", frame) 
 

@@ -10,9 +10,10 @@ from utils import ARUCO_DICT
 
 class GenerateTags:
     def __init__(self, TagSettings):
-        #Find/Create Directory (Maybe place within GUI?)
+        #Find/Create Directory
         while True:
             try:
+                print("\n=================================================")
                 userInput = int(input("Create Directory for Tag (0:False 1:True)? "))
             except ValueError:
                 input("Please input Numeric Values.")
@@ -45,17 +46,17 @@ class GenerateTags:
                     else:
                         print("ERROR")
                
-        #ID of ArUco Tag (Need to check if exists within type)
+        #ID of ArUco Tag
         good = False
-        print(range)
         while not good:
             try:
+                print("\n=================================================")
                 iden = int(input("Please enter the ID of ArUCo tag to generate: "))
             except ValueError:
                 input("Please input Numeric Values.")
             else:
-                if iden < 0 or iden > range - 1:
-                    input("Please input value within range of 0 to " + str(range - 1))
+                if iden < 0 or iden > int(TagSettings["range"]) - 1:
+                    input("Please input value within range of 0 to " + str(int(TagSettings["range"]) - 1))
                 else:
                     good = True
         
@@ -63,6 +64,7 @@ class GenerateTags:
         good = False
         while good == False:
             try:
+                print("\n=================================================")
                 size = int(input("Please enter the size of ArUCo tag to generate (pixel): "))
             except ValueError:
                 input("Please input Numeric Values.")
@@ -75,13 +77,14 @@ class GenerateTags:
         # Check to see if the dictionary is supported
         arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[TagSettings["tagType"]])
 
-        print("Generating ArUCo tag of type '{}' with ID '{}'".format(tagType, iden))
+        print("\n=================================================")
+        print("Generating ArUCo tag of type '{}' with ID '{}'".format(TagSettings["tagType"], iden))
         tag_size = size
         tag = np.zeros((tag_size, tag_size, 1), dtype="uint8")
         cv2.aruco.drawMarker(arucoDict, iden, tag_size, tag, 1)
 
         # Save the tag generated
-        tag_name = f'{dirpath}/{tagType}_id_{iden}.png'
+        tag_name = f'{dirpath}/{TagSettings["tagType"]}_id_{iden}.png'
         cv2.imwrite(tag_name, tag)
         cv2.imshow("ArUCo Tag", tag)
         cv2.waitKey(0)

@@ -4,18 +4,13 @@ from GenerateTags import GenerateTags as GenerateTags
 from PoseDetector import PoseDetector as PoseDetector
 import cv2
 
-#GUI Components
-running = True
 
-	#=======================================================================================================================
-	#=======================================================================================================================
-
-	#Get Camera Data
-	#https://stackoverflow.com/questions/8044539/listing-available-devices-in-python-opencv
-	#https://stackoverflow.com/questions/11420748/setting-camera-parameters-in-opencv-python
+#Get Camera Data (POSSIBLY BEFORE MAIN PROGRAM)
+#https://stackoverflow.com/questions/8044539/listing-available-devices-in-python-opencv
+#https://stackoverflow.com/questions/11420748/setting-camera-parameters-in-opencv-python
 def getCameras():
-
-	print("Obtaining Camera/s")
+	print("\n=================================================")
+	print("Obtaining Camera/s - Please wait")
 
 	#List camera/s
 	cameraList = []
@@ -30,12 +25,12 @@ def getCameras():
 	#Set Camera
 	while True:
 		try:
+			print("\n=================================================")
 			print("List of avaliable camera/s index")
 			i = 0
 			for cam in cameraList:
 				print("{}: Camera Index {}".format(i,cam))
 				i += 1
-
 			userInput = int(input("Select camera index: "))
 		except ValueError:
 			input("Please input Numeric Values.")
@@ -45,18 +40,25 @@ def getCameras():
 			else:
 				index = cameraList[userInput]
 				cap = cv2.VideoCapture(index)
-				ret, frame = cap.read()
-				cv2.imshow("Camera index {} - Press q to close".format(index), frame) 
-				cv2.waitKey(0)
+				print("Creating Camera Preview")
+				while True:
+					ret, frame = cap.read()
+					cv2.imshow("Camera index {} - Press q to close".format(index), frame) 
+					cv2.waitKey(1)
+					key = cv2.waitKey(1) & 0xFF 
+					if key == ord("q"): break
+
 				cap.release()
 				cv2.destroyAllWindows()
 
 				input("Please Enter to continue")
 				break
-        #Resolution of Camera
+
+    #Resolution of Camera
 	while True:
 		try:
-			print("\nResolution Types")
+			print("\n=================================================")
+			print("Resolution Types")
 			print("1: Standard 480p [640,480]")
 			print("2: High 720p 	[1280,720]")
 			print("3: Full HD 1080p [1920,1080])")
@@ -75,6 +77,7 @@ def getCameras():
 	#Camera's FPS
 	while True:
 		try:
+			print("\n=================================================")
 			fps = int(input("Please enter the Frames Per Second (FPS): "))
 		except ValueError:
 			input("Please input Numeric Values.")
@@ -91,8 +94,8 @@ def getCameras():
 	
 	return CameraSettings
 
-	#=======================================================================================================================
-	#=======================================================================================================================
+#=======================================================================================================================
+#=======================================================================================================================
 
 #Set Tag type and range
 def setTag():
@@ -101,6 +104,7 @@ def setTag():
 	while good == False:
 		try:
 			#https://docs.opencv.org/4.x/d9/d6a/group__aruco.html#gac84398a9ed9dd01306592dd616c2c975
+			print("\n=================================================")
 			print("ArUco Tag List")
 			print("0: DICT_4X4_50  | 1: DICT_4X4_100  | 2: DICT_4X4_250  | 3: DICT_4X4_1000")
 			print("4: DICT_5X5_50  | 5: DICT_5X5_100  | 6: DICT_5X5_250  | 7: DICT_5X5_1000")
@@ -115,7 +119,7 @@ def setTag():
 			print("100 - Amount of id       | DICT_APRILTAG_36h10 = 6X6_2320")
 			print("                         | DICT_APRILTAG_25h9  = 6X6_587")
 
-			userInput = int(input("Please enter the type of ArUCo tag to generate: "))
+			userInput = int(input("Please enter the type of ArUCo tag: "))
 
 		except ValueError:
 			input("Please input Numeric Values.")
@@ -151,6 +155,12 @@ def setTag():
 	TagSettings["range"] = range
 
 	return TagSettings
+
+#=======================================================================================================================
+#=======================================================================================================================
+
+#GUI Components
+running = True
 
 #Program Start
 while running:
@@ -191,6 +201,7 @@ while running:
 
 		while True:
 			try:
+				print("\n=================================================")
 				userInput = int(input("Create Images (0:False 1:True)? "))
 			except ValueError:
 				input("Please input Numeric Values.")
@@ -222,6 +233,7 @@ while running:
 
 		while True:
 			try:
+				print("\n=================================================")
 				print("Set Values:")
 				inputX = int(input("x: "))
 				inputY = int(input("y: "))
@@ -241,5 +253,3 @@ while running:
 
 
 print("EXITED VIA COMMAND")
-
-
