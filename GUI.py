@@ -3,6 +3,7 @@ from Calibrate import Calibrate as Calibrate
 from GenerateTags import GenerateTags as GenerateTags
 from PoseDetector import PoseDetector as PoseDetector
 import cv2
+import os
 
 
 #Get Camera Data
@@ -36,9 +37,9 @@ def getCameras():
 			if userInput < 0 or userInput > len(cameraList) - 1:
 				input("Please input from Command List.")
 			else:
+				print("Creating Camera Preview")
 				index = cameraList[userInput]
 				cap = cv2.VideoCapture(index)
-				print("Creating Camera Preview")
 				while True:
 					ret, frame = cap.read()
 					cv2.imshow("Camera index {} - Press q to close".format(index), frame) 
@@ -172,10 +173,11 @@ while running:
 		print("=================================================")
 		print("|                 Command  List                 |")
 		print("|                                               |")
-		print("|         1 : Camera Select + Calibrate         |")
-		print("|               2 : Generate Tags               |")
-		print("|         3 : Detect Pose (Eye to Hand)         |")
-		print("|         4 : Follow Pose (Eye in Hand)         |")
+		print("|               1 : Camera Select               |")
+		print("|                 2 : Calibrate                 |")
+		print("|               3 : Generate Tags               |")
+		print("|         4 : Detect Pose (Eye to Hand)         |")
+		print("|         5 : Follow Pose (Eye in Hand)         |")
 		print("|               0 : Close Program               |")
 		print("|                                               |")
 		print("=================================================")
@@ -185,7 +187,7 @@ while running:
 		except ValueError:
 			input("Please input Numeric Values.")
 		else:
-			if command < 0 or command > 4:
+			if command < 0 or command > 5:
 				input("Please input from Command List.")
 			else:
 				break
@@ -195,56 +197,78 @@ while running:
 		print("EXIT")
 		running = False
 
-	elif command == 1: #Camera Select + Calibration
+	elif command == 1: #Camera Select 
 		print("CALIBRATION")
-
-		#Obtain Camera/s
 		cameraSetting = getCameras()
 
-		while True:
-			try:
-				print("\n=================================================")
-				userInput = int(input("Create Images (0:False | 1:True)? "))
-			except ValueError:
-				input("Please input Numeric Values.")
-			else:
-				if userInput < 0 or userInput > 1:
-					input("Please input from Command List.")
+	elif command == 2: #Calibration
+		if not cameraSetting:
+			print("\n=================================================")
+			print("Camera selection does not exist.")
+			print("Please run Camera selection.")
+		else:
+			while True:
+				try:
+					print("\n=================================================")
+					userInput = int(input("Create Images (0:False | 1:True)? "))
+				except ValueError:
+					input("Please input Numeric Values.")
 				else:
-					if userInput == 1:
-						Calibrate.camCapture(cameraSetting)
-					break
+					if userInput < 0 or userInput > 1:
+						input("Please input from Command List.")
+					else:
+						if userInput == 1:
+							Calibrate.camCapture(cameraSetting)
+						break
+					
+			Calibrate.Calibration()
 
-		Calibrate.Calibration()
-			
-	elif command == 2: #Generate Tags
+		input("Press Enter to continue")
+
+	elif command == 3: #Generate Tags
 		print("GENERATE TAGS")
 		tagSetting = setTag()
 		GenerateTags(tagSetting)
 
-	elif command == 3: #Eye to Hand
-		print("EYE TO HAND")
-		tagSetting = setTag()
-		PoseDetector.poseDetector(PoseDetector, None, None, None, tagSetting, cameraSetting)
-		input("Press Enter to continue")
+	elif command == 4 or command == 5: #Pose
+		
+		#if Camera selection does not exist
+		if not cameraSetting:
+			print("\n=================================================")
+			print("Camera selection does not exist.")
+			print("Please run Camera selection.")
 
-	elif command == 4: #Eye in Hand
-		print("EYE IN HAND")
+        #if Calibration does not exist
+		elif not os.path.isfile("calibration_matrix.npy") or not os.path.isfile("distortion_coefficients.npy"):
+			print("\n=================================================")
+			print("Calibration does not exist.")
+			print("Please run Calibration first.")
 
-		while True:
-			try:
-				print("\n=================================================")
-				print("Set Values:")
-				inputX = int(input("X: "))
-				inputY = int(input("Y: "))
-				inputZ = int(input("Z: "))
-			except ValueError:
-				input("Please input Numeric Values.")
-			else:
-				break
+		#Detect Pose
+		elif command == 4:
+			print("EYE TO HAND")
+			tagSetting = setTag()
+			PoseDetector.poseDetector(PoseDetector, None, None, None, tagSetting, cameraSetting)
 
-		tagSetting = setTag()
-		PoseDetector.poseDetector(PoseDetector, inputX, inputY, inputZ, tagSetting, cameraSetting)
+		#Follow Pose
+		elif command == 5:
+			print("EYE IN HAND")
+
+			while True:
+				try:
+					print("\n=================================================")
+					print("Set Values:")
+					inputX = int(input("X: "))
+					inputY = int(input("Y: "))
+					inputZ = int(input("Z: "))
+				except ValueError:
+					input("Please input Numeric Values.")
+				else:
+					break
+
+			tagSetting = setTag()
+			PoseDetector.poseDetector(PoseDetector, inputX, inputY, inputZ, tagSetting, cameraSetting)
+		
 		input("Press Enter to continue")
 
 	#ERROR CASE
