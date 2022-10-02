@@ -48,6 +48,14 @@ def getCameras():
 
 				cap.release()
 				cv2.destroyAllWindows()
+				
+				try:
+					confirm = int(input("Use this camera? (0:False | 1:True)? "))
+				except ValueError:
+					input("Please input Numeric Values.")
+				else:
+					if confirm == 0:
+						continue
 
 				input("Please Enter to continue")
 				break
