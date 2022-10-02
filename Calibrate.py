@@ -9,7 +9,7 @@ from   tkinter import filedialog
 class Calibrate:
 
     #Produce Images from Camera for Calibration
-    def camCapture(cameraList):
+    def camCapture(cameraSetting):
         #Find/Create Directory
         while True:
             try:
@@ -22,7 +22,7 @@ class Calibrate:
                     input("Please input from Command List.")
                 else:
                     if userInput == 1: #Create Directory
-                        dirName = "Capture_" + str(cameraList["index"]) + "_" + str(cameraList["height"])
+                        dirName = "Capture_" + str(cameraSetting["index"]) + "_" + str(cameraSetting["height"])
                         try:
                             os.mkdir(dirName)
                         except FileExistsError:
@@ -63,10 +63,10 @@ class Calibrate:
 
         print("Press 'q' on capture to stop")
 
-        cap = cv2.VideoCapture(cameraList["index"])
-        cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraList["width"])
-        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraList["height"])
-        cap.set(cv2.CAP_PROP_FPS, cameraList["fps"])
+        cap = cv2.VideoCapture(cameraSetting["index"])
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraSetting["width"])
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraSetting["height"])
+        cap.set(cv2.CAP_PROP_FPS, cameraSetting["fps"])
 
         frameCount = 0
         capImageCount = 0

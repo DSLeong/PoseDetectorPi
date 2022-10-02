@@ -70,7 +70,7 @@ class PoseDetector:
 
 
     #Estimate Pose Values
-    def poseDetector(self, inputEX, inputEY, inputEZ, tagSetting, cameraList):
+    def poseDetector(self, inputEX, inputEY, inputEZ, tagSetting, cameraSetting):
 
         #if Calibration does not exist
         if not os.path.isfile("calibration_matrix.npy") or not os.path.isfile("distortion_coefficients.npy"):
@@ -86,7 +86,7 @@ class PoseDetector:
             while True:
                 try:
                     print("\n=================================================")
-                    marker_size = float(input("Please enter the size of the squares (mm):  "))
+                    marker_size = float(input("Please enter the size of the squares (mm): "))
                 except ValueError:
                     input("Please input Numeric Values.")
                 else:
@@ -126,10 +126,10 @@ class PoseDetector:
             
             
             #Check for camera (Usually 0)
-            cap = cv2.VideoCapture(cameraList["index"])
-            cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraList["width"])
-            cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraList["height"])
-            cap.set(cv2.CAP_PROP_FPS, cameraList["fps"])
+            cap = cv2.VideoCapture(cameraSetting["index"])
+            cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraSetting["width"])
+            cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraSetting["height"])
+            cap.set(cv2.CAP_PROP_FPS, cameraSetting["fps"])
 
             while True:
                 ret, frame = cap.read()

@@ -44,7 +44,6 @@ def getCameras():
 				while True:
 					ret, frame = cap.read()
 					cv2.imshow("Camera index {} - Press q to close".format(index), frame) 
-					cv2.waitKey(1)
 					key = cv2.waitKey(1) & 0xFF 
 					if key == ord("q"): break
 
@@ -59,8 +58,8 @@ def getCameras():
 		try:
 			print("\n=================================================")
 			print("Resolution Types")
-			print("1: Standard 480p [640,480]")
-			print("2: High 720p 	[1280,720]")
+			print("1: Standard 480p [ 640, 480]")
+			print("2: High 720p     [1280, 720]")
 			print("3: Full HD 1080p [1920,1080])")
 			userInput = int(input("Please enter the Resolution: "))
 		except ValueError:
@@ -161,6 +160,7 @@ def setTag():
 
 #GUI Components
 running = True
+cameraSetting = {}
 
 #Program Start
 while running:
@@ -173,7 +173,7 @@ while running:
 		print("=================================================")
 		print("|                 Command  List                 |")
 		print("|                                               |")
-		print("|                 1 : Calibrate                 |")
+		print("|         1 : Camera Select + Calibrate         |") #CHANGE TO SELECT CAMERA
 		print("|               2 : Generate Tags               |")
 		print("|         3 : Detect Pose (Eye to Hand)         |")
 		print("|         4 : Follow Pose (Eye in Hand)         |")
@@ -191,13 +191,16 @@ while running:
 			else:
 				break
 		
-		#Switch for Modules
+	#Switch for Modules
 	if command == 0: #Close Program
 		print("EXIT")
 		running = False
 
-	elif command == 1: #Calibration
+	elif command == 1: #Camera Select + Calibration
 		print("CALIBRATION")
+
+		#Obtain Camera/s
+		cameraSetting = getCameras()
 
 		while True:
 			try:
@@ -210,8 +213,7 @@ while running:
 					input("Please input from Command List.")
 				else:
 					if userInput == 1:
-						cameraList = getCameras()
-						Calibrate.camCapture(cameraList)
+						Calibrate.camCapture(cameraSetting)
 					break
 
 		Calibrate.Calibration()
@@ -223,9 +225,8 @@ while running:
 
 	elif command == 3: #Eye to Hand
 		print("EYE TO HAND")
-		cameraList = getCameras()
 		tagSetting = setTag()
-		PoseDetector.poseDetector(PoseDetector, None, None, None, tagSetting, cameraList)
+		PoseDetector.poseDetector(PoseDetector, None, None, None, tagSetting, cameraSetting)
 		input("Press Enter to continue")
 
 	elif command == 4: #Eye in Hand
@@ -243,11 +244,11 @@ while running:
 			else:
 				break
 
-		cameraList = getCameras()
 		tagSetting = setTag()
-		PoseDetector.poseDetector(PoseDetector, inputEX, inputEY, inputEZ, tagSetting, cameraList)
+		PoseDetector.poseDetector(PoseDetector, inputEX, inputEY, inputEZ, tagSetting, cameraSetting)
 		input("Press Enter to continue")
-		#ERROR CASE
+
+	#ERROR CASE
 	else:
 		input("ERROR")
 
