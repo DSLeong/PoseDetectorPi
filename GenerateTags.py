@@ -35,20 +35,24 @@ class GenerateTags:
                         break
 
                     elif userInput == 0: #Find Directory
-                        print("Please choose the directory where the ArUCo tag will be saved")
-                        input("Press enter to continue")
-                        root = tk.Tk()
-                        root.withdraw()
-                        dirpath = filedialog.askdirectory()
-                        print(dirpath)
-                        break
+                        while True:
+                            print("\n=================================================")
+                            print("Please choose the directory where the ArUCo tag will be saved")
+                            input("Press enter to continue")
+                            root = tk.Tk()
+                            root.withdraw()
+                            dirpath = filedialog.askdirectory()
+                            print(dirpath)
+                            if dirpath == "":
+                                input("Please select folder")
+                            else:
+                                break
                         
                     else:
                         print("ERROR")
                
         #ID of ArUco Tag
-        good = False
-        while not good:
+        while True:
             try:
                 print("\n=================================================")
                 iden = int(input("Please enter the ID of ArUCo tag to generate: "))
@@ -58,11 +62,10 @@ class GenerateTags:
                 if iden < 0 or iden > int(TagSettings["range"]) - 1:
                     input("Please input value within range of 0 to " + str(int(TagSettings["range"]) - 1))
                 else:
-                    good = True
+                    break
         
         #Size of Tag (pixel) or just have sets of values or standard value
-        good = False
-        while good == False:
+        while True:
             try:
                 print("\n=================================================")
                 size = int(input("Please enter the size of ArUCo tag to generate (pixel): "))
@@ -72,7 +75,7 @@ class GenerateTags:
                 if size <= 0:
                     print("Error: Please enter a positive number")
                 else:
-                    good = True
+                    break
 
         # Check to see if the dictionary is supported
         arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[TagSettings["tagType"]])

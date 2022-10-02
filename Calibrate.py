@@ -35,13 +35,19 @@ class Calibrate:
                         break
 
                     elif userInput == 0: #Find Directory
-                        print("Please choose the folder where to save checkerboard images:")
-                        input("Press enter to continue")
-                        root = tk.Tk()
-                        root.withdraw()
-                        dirpath = filedialog.askdirectory()
-                        print(dirpath)
-                        break
+                        while True:
+                            print("\n=================================================")
+                            print("Please choose the folder where to save checkerboard images:")
+                            input("Press enter to continue")
+                            root = tk.Tk()
+                            root.withdraw()
+                            dirpath = filedialog.askdirectory()
+                            print(dirpath)
+                            if dirpath == "":
+                                input("Please select folder")
+                            else:
+                                break
+                        
                     else:
                         print("ERROR")
 
@@ -107,18 +113,22 @@ class Calibrate:
     #Calibration of Camera
     def Calibration():
 
-        #Find Director
-        print("\n=================================================")
-        print("Please choose the folder where the checkerboard images are located:")
-        input("Press enter to continue")
-        root = tk.Tk()
-        root.withdraw()
-        dirpath = filedialog.askdirectory()
-        print(dirpath)
+        #Find Directory
+        while True:
+            print("\n=================================================")
+            print("Please choose the folder where the checkerboard images are located:")
+            input("Press enter to continue")
+            root = tk.Tk()
+            root.withdraw()
+            dirpath = filedialog.askdirectory()
+            print(dirpath)
+            if dirpath == "":
+                input("Please select folder")
+            else:
+                break
         
         #Width of Checkerboard
-        good = False
-        while not good:
+        while True:
             try:
                 print("\n=================================================")
                 width = int(input("Please enter the width of the checkerboard (no. of corners): "))
@@ -131,8 +141,7 @@ class Calibrate:
                     break
 
         #Height of Checkerboard
-        good = False
-        while not good:
+        while True:
             try:
                 print("\n=================================================")
                 height = int(input("Please enter the height of the checkerboard (no. of corners): "))
@@ -145,8 +154,7 @@ class Calibrate:
                     break
        
         #Checkerboard square length
-        good = False
-        while not good:
+        while True:
             try:
                 print("\n=================================================")
                 square_size = float(input("Please enter the size of the squares (mm): "))

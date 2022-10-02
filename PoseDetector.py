@@ -70,12 +70,13 @@ class PoseDetector:
 
 
     #Estimate Pose Values
-    def poseDetector(self, inputEX, inputEY, inputEZ, tagSetting, cameraSetting):
+    def poseDetector(self, inputX, inputY, inputZ, tagSetting, cameraSetting):
 
         #if Calibration does not exist
-        if not os.path.isfile("calibration_matrix.npy") or not os.path.isfile("distortion_coefficients.npy"):
-            print("Calibration does not exist.")
-            print("Please run Calibration first.")
+        if not cameraSetting:
+            print("\n=================================================")
+            print("Camera selection + Calibration does not exist.")
+            print("Please run Camera selection + Calibration first.")
             input("Press enter to continue")
 
         else:
@@ -86,7 +87,7 @@ class PoseDetector:
             while True:
                 try:
                     print("\n=================================================")
-                    marker_size = float(input("Please enter the size of the squares (mm): "))
+                    marker_size = float(input("Please enter the full length of the marker being used (mm): "))
                 except ValueError:
                     input("Please input Numeric Values.")
                 else:
@@ -125,7 +126,7 @@ class PoseDetector:
                 follow = False
             
             
-            #Check for camera (Usually 0)
+            #Camera Setting
             cap = cv2.VideoCapture(cameraSetting["index"])
             cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraSetting["width"])
             cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraSetting["height"])
@@ -173,7 +174,7 @@ class PoseDetector:
 
                     #If Eye in Hand
                     if follow:
-                        PanTilt.EyeInHand(x, y, z, math.degrees(eulerX), math.degrees(eulerY), math.degrees(eulerZ), inputEX, inputEY, inputEZ)
+                        PanTilt.EyeInHand(x, y, z, math.degrees(eulerX), math.degrees(eulerY), math.degrees(eulerZ), inputX, inputY, inputZ)
                     
                     #Display on Command Prompt
                     self.Display(self,x, y, z, math.degrees(eulerX), math.degrees(eulerY), math.degrees(eulerZ))

@@ -5,9 +5,7 @@ from PoseDetector import PoseDetector as PoseDetector
 import cv2
 
 
-#Get Camera Data (POSSIBLY BEFORE MAIN PROGRAM)
-#https://stackoverflow.com/questions/8044539/listing-available-devices-in-python-opencv
-#https://stackoverflow.com/questions/11420748/setting-camera-parameters-in-opencv-python
+#Get Camera Data
 def getCameras():
 	print("\n=================================================")
 	print("Obtaining Camera/s - Please wait")
@@ -31,7 +29,7 @@ def getCameras():
 			for cam in cameraList:
 				print("{}: Camera Index {}".format(i,cam))
 				i += 1
-			userInput = int(input("Select camera index: "))
+			userInput = int(input("\nSelect camera index: "))
 		except ValueError:
 			input("Please input Numeric Values.")
 		else:
@@ -61,7 +59,8 @@ def getCameras():
 			print("1: Standard 480p [ 640, 480]")
 			print("2: High 720p     [1280, 720]")
 			print("3: Full HD 1080p [1920,1080])")
-			userInput = int(input("Please enter the Resolution: "))
+
+			userInput = int(input("\nPlease enter the Resolution number: "))
 		except ValueError:
 			input("Please input Numeric Values.")
 		else:
@@ -112,13 +111,13 @@ def setTag():
 			print("16: DICT_ARUCO_ORIGINAL | 17: DICT_APRILTAG_16h5 | 18: DICT_APRILTAG_25h9")
 			print("19: DICT_APRILTAG_36h10 | 20: DICT_APRILTAG_36h11\n")
 
-			print("Formating                | DICT_ARUCO_ORIGINAL = 6X6_1024")
-			print("DICT_5X5_100             | DICT_APRILTAG_16h5  = 4X4_30")
-			print("5x5 - pixel (internal)   | DICT_APRILTAG_25h9  = 5X5_35")
-			print("100 - Amount of id       | DICT_APRILTAG_36h10 = 6X6_2320")
-			print("                         | DICT_APRILTAG_25h9  = 6X6_587")
+			print("Formating               | DICT_ARUCO_ORIGINAL = 6X6_1024")
+			print("DICT_5X5_100            | DICT_APRILTAG_16h5  = 4X4_30")
+			print("5x5 - pixel (internal)  | DICT_APRILTAG_25h9  = 5X5_35")
+			print("100 - Amount of id      | DICT_APRILTAG_36h10 = 6X6_2320")
+			print("                        | DICT_APRILTAG_25h9  = 6X6_587")
 
-			userInput = int(input("Please enter the type of ArUCo tag: "))
+			userInput = int(input("\nPlease enter the number for ArUCo tag: "))
 
 		except ValueError:
 			input("Please input Numeric Values.")
@@ -173,7 +172,7 @@ while running:
 		print("=================================================")
 		print("|                 Command  List                 |")
 		print("|                                               |")
-		print("|         1 : Camera Select + Calibrate         |") #CHANGE TO SELECT CAMERA
+		print("|         1 : Camera Select + Calibrate         |")
 		print("|               2 : Generate Tags               |")
 		print("|         3 : Detect Pose (Eye to Hand)         |")
 		print("|         4 : Follow Pose (Eye in Hand)         |")
@@ -182,7 +181,7 @@ while running:
 		print("=================================================")
 
 		try:
-			command = int(input("Command? "))
+			command = int(input("\nCommand? "))
 		except ValueError:
 			input("Please input Numeric Values.")
 		else:
@@ -205,7 +204,7 @@ while running:
 		while True:
 			try:
 				print("\n=================================================")
-				userInput = int(input("Create Images (0:False 1:True)? "))
+				userInput = int(input("Create Images (0:False | 1:True)? "))
 			except ValueError:
 				input("Please input Numeric Values.")
 			else:
@@ -236,16 +235,16 @@ while running:
 			try:
 				print("\n=================================================")
 				print("Set Values:")
-				inputEX = int(input("Euler X: "))
-				inputEY = int(input("Euler Y: "))
-				inputEZ = int(input("Euler Z: "))
+				inputX = int(input("X: "))
+				inputY = int(input("Y: "))
+				inputZ = int(input("Z: "))
 			except ValueError:
 				input("Please input Numeric Values.")
 			else:
 				break
 
 		tagSetting = setTag()
-		PoseDetector.poseDetector(PoseDetector, inputEX, inputEY, inputEZ, tagSetting, cameraSetting)
+		PoseDetector.poseDetector(PoseDetector, inputX, inputY, inputZ, tagSetting, cameraSetting)
 		input("Press Enter to continue")
 
 	#ERROR CASE

@@ -18,31 +18,41 @@ class PanTilt:
             pantilthat.tilt(0)
 
     #Eye in Hand (Follow)
-    def EyeInHand(x, y, z, ex, ey, ez, inputEX, inputEY, inputEZ):
+    def EyeInHand(x, y, z, ex, ey, ez, inputX, inputY, inputZ):
         print("EyeInHand")
 
-        #TESTING STILL NEEDED
+        if x < 0: x += 360
+        if y < 0: y += 360
+        if inputX < 0: inputX += 360
+        if inputY < 0: inputY += 360
 
         if PanTiltEnable:
+            #=============================
+            #Pan (Vertical)
+            # up = pan decrease
+            # down = pan incease
+            #=============================
             pan = pantilthat.get_pan()
             if pan > -90 and pan < 90:
-                if ey > inputEY:
+                if x > inputX:
                     pantilthat.pan(pan + 1)
-                elif ey < inputEY:
+                elif x < inputX:
                     pantilthat.pan(pan - 1)
             else:
-                pantilthat.pan(pan)
+                 pantilthat.pan(pan)
             
             time.sleep(0.005)
 
             #=============================
-            #Tilt
+            #Tilt (Horizontal)
+            # left = tilt decrease
+            # right = tilt incease
             #=============================
             tilt = pantilthat.get_tilt()
             if tilt > -90 and tilt < 90:
-                if ex > inputEX:
+                if y > inputY:
                     pantilthat.tilt(tilt + 1)
-                elif ex < inputEX:
+                elif y < inputY:
                     pantilthat.tilt(tilt - 1)
             else:
                 pantilthat.tilt(tilt)
