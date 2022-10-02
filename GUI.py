@@ -3,11 +3,10 @@ from Calibrate import Calibrate as Calibrate
 from GenerateTags import GenerateTags as GenerateTags
 from PoseDetector import PoseDetector as PoseDetector
 import cv2
+import os
 
 
-#Get Camera Data (POSSIBLY BEFORE MAIN PROGRAM)
-#https://stackoverflow.com/questions/8044539/listing-available-devices-in-python-opencv
-#https://stackoverflow.com/questions/11420748/setting-camera-parameters-in-opencv-python
+#Get Camera Data
 def getCameras():
 	print("\n=================================================")
 	print("Obtaining Camera/s - Please wait")
@@ -31,20 +30,19 @@ def getCameras():
 			for cam in cameraList:
 				print("{}: Camera Index {}".format(i,cam))
 				i += 1
-			userInput = int(input("Select camera index: "))
+			userInput = int(input("\nSelect camera index: "))
 		except ValueError:
 			input("Please input Numeric Values.")
 		else:
 			if userInput < 0 or userInput > len(cameraList) - 1:
 				input("Please input from Command List.")
 			else:
+				print("Creating Camera Preview")
 				index = cameraList[userInput]
 				cap = cv2.VideoCapture(index)
-				print("Creating Camera Preview")
 				while True:
 					ret, frame = cap.read()
 					cv2.imshow("Camera index {} - Press q to close".format(index), frame) 
-					cv2.waitKey(1)
 					key = cv2.waitKey(1) & 0xFF 
 					if key == ord("q"): break
 
@@ -59,10 +57,11 @@ def getCameras():
 		try:
 			print("\n=================================================")
 			print("Resolution Types")
-			print("1: Standard 480p [640,480]")
-			print("2: High 720p 	[1280,720]")
+			print("1: Standard 480p [ 640, 480]")
+			print("2: High 720p     [1280, 720]")
 			print("3: Full HD 1080p [1920,1080])")
-			userInput = int(input("Please enter the Resolution: "))
+
+			userInput = int(input("\nPlease enter the Resolution number: "))
 		except ValueError:
 			input("Please input Numeric Values.")
 		else:
@@ -113,13 +112,13 @@ def setTag():
 			print("16: DICT_ARUCO_ORIGINAL | 17: DICT_APRILTAG_16h5 | 18: DICT_APRILTAG_25h9")
 			print("19: DICT_APRILTAG_36h10 | 20: DICT_APRILTAG_36h11\n")
 
-			print("Formating                | DICT_ARUCO_ORIGINAL = 6X6_1024")
-			print("DICT_5X5_100             | DICT_APRILTAG_16h5  = 4X4_30")
-			print("5x5 - pixel (internal)   | DICT_APRILTAG_25h9  = 5X5_35")
-			print("100 - Amount of id       | DICT_APRILTAG_36h10 = 6X6_2320")
-			print("                         | DICT_APRILTAG_25h9  = 6X6_587")
+			print("Formating               | DICT_ARUCO_ORIGINAL = 6X6_1024")
+			print("DICT_5X5_100            | DICT_APRILTAG_16h5  = 4X4_30")
+			print("5x5 - pixel (internal)  | DICT_APRILTAG_25h9  = 5X5_35")
+			print("100 - Amount of id      | DICT_APRILTAG_36h10 = 6X6_2320")
+			print("                        | DICT_APRILTAG_25h9  = 6X6_587")
 
-			userInput = int(input("Please enter the type of ArUCo tag: "))
+			userInput = int(input("\nPlease enter the number for ArUCo tag: "))
 
 		except ValueError:
 			input("Please input Numeric Values.")
@@ -161,6 +160,7 @@ def setTag():
 
 #GUI Components
 running = True
+cameraSetting = {}
 
 #Program Start
 while running:
@@ -173,81 +173,105 @@ while running:
 		print("=================================================")
 		print("|                 Command  List                 |")
 		print("|                                               |")
-		print("|                 1 : Calibrate                 |")
-		print("|               2 : Generate Tags               |")
-		print("|         3 : Detect Pose (Eye to Hand)         |")
-		print("|         4 : Follow Pose (Eye in Hand)         |")
+		print("|               1 : Camera Select               |")
+		print("|                 2 : Calibrate                 |")
+		print("|               3 : Generate Tags               |")
+		print("|         4 : Detect Pose (Eye to Hand)         |")
+		print("|         5 : Follow Pose (Eye in Hand)         |")
 		print("|               0 : Close Program               |")
 		print("|                                               |")
 		print("=================================================")
 
 		try:
-			command = int(input("Command? "))
+			command = int(input("\nCommand? "))
 		except ValueError:
 			input("Please input Numeric Values.")
 		else:
-			if command < 0 or command > 4:
+			if command < 0 or command > 5:
 				input("Please input from Command List.")
 			else:
 				break
 		
-		#Switch for Modules
+	#Switch for Modules
 	if command == 0: #Close Program
 		print("EXIT")
 		running = False
 
-	elif command == 1: #Calibration
+	elif command == 1: #Camera Select 
 		print("CALIBRATION")
+		cameraSetting = getCameras()
 
-		while True:
-			try:
-				print("\n=================================================")
-				userInput = int(input("Create Images (0:False 1:True)? "))
-			except ValueError:
-				input("Please input Numeric Values.")
-			else:
-				if userInput < 0 or userInput > 1:
-					input("Please input from Command List.")
+	elif command == 2: #Calibration
+		if not cameraSetting:
+			print("\n=================================================")
+			print("Camera selection does not exist.")
+			print("Please run Camera selection.")
+		else:
+			while True:
+				try:
+					print("\n=================================================")
+					userInput = int(input("Create Images (0:False | 1:True)? "))
+				except ValueError:
+					input("Please input Numeric Values.")
 				else:
-					if userInput == 1:
-						cameraList = getCameras()
-						Calibrate.camCapture(cameraList)
-					break
+					if userInput < 0 or userInput > 1:
+						input("Please input from Command List.")
+					else:
+						if userInput == 1:
+							Calibrate.camCapture(cameraSetting)
+						break
+					
+			Calibrate.Calibration()
 
-		Calibrate.Calibration()
-			
-	elif command == 2: #Generate Tags
+		input("Press Enter to continue")
+
+	elif command == 3: #Generate Tags
 		print("GENERATE TAGS")
 		tagSetting = setTag()
 		GenerateTags(tagSetting)
 
-	elif command == 3: #Eye to Hand
-		print("EYE TO HAND")
-		cameraList = getCameras()
-		tagSetting = setTag()
-		PoseDetector.poseDetector(PoseDetector, None, None, None, tagSetting, cameraList)
+	elif command == 4 or command == 5: #Pose
+		
+		#if Camera selection does not exist
+		if not cameraSetting:
+			print("\n=================================================")
+			print("Camera selection does not exist.")
+			print("Please run Camera selection.")
+
+        #if Calibration does not exist
+		elif not os.path.isfile("calibration_matrix.npy") or not os.path.isfile("distortion_coefficients.npy"):
+			print("\n=================================================")
+			print("Calibration does not exist.")
+			print("Please run Calibration first.")
+
+		#Detect Pose
+		elif command == 4:
+			print("EYE TO HAND")
+			tagSetting = setTag()
+			PoseDetector.poseDetector(PoseDetector, None, None, None, tagSetting, cameraSetting)
+
+		#Follow Pose
+		elif command == 5:
+			print("EYE IN HAND")
+
+			while True:
+				try:
+					print("\n=================================================")
+					print("Set Values:")
+					inputX = int(input("X: "))
+					inputY = int(input("Y: "))
+					inputZ = int(input("Z: "))
+				except ValueError:
+					input("Please input Numeric Values.")
+				else:
+					break
+
+			tagSetting = setTag()
+			PoseDetector.poseDetector(PoseDetector, inputX, inputY, inputZ, tagSetting, cameraSetting)
+		
 		input("Press Enter to continue")
 
-	elif command == 4: #Eye in Hand
-		print("EYE IN HAND")
-
-		while True:
-			try:
-				print("\n=================================================")
-				print("Set Values:")
-				inputX = int(input("x: "))
-				inputY = int(input("y: "))
-				inputZ = int(input("z: "))
-			except ValueError:
-				input("Please input Numeric Values.")
-			else:
-				break
-
-		cameraList = getCameras()
-		tagSetting = setTag()
-		PoseDetector.poseDetector(PoseDetector, inputX, inputY, inputZ, tagSetting, cameraList)
-		input("Press Enter to continue")
-		#ERROR CASE
+	#ERROR CASE
 	else:
 		input("ERROR")
 

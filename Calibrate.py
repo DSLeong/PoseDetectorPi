@@ -9,7 +9,8 @@ from   tkinter import filedialog
 class Calibrate:
 
     #Produce Images from Camera for Calibration
-    def camCapture(cameraList):
+    def camCapture(cameraSetting):
+
         #Find/Create Directory
         while True:
             try:
@@ -22,7 +23,7 @@ class Calibrate:
                     input("Please input from Command List.")
                 else:
                     if userInput == 1: #Create Directory
-                        dirName = "Capture_" + str(cameraList["index"]) + "_" + str(cameraList["height"])
+                        dirName = "Capture_" + str(cameraSetting["index"]) + "_" + str(cameraSetting["height"])
                         try:
                             os.mkdir(dirName)
                         except FileExistsError:
@@ -35,13 +36,19 @@ class Calibrate:
                         break
 
                     elif userInput == 0: #Find Directory
-                        print("Please choose the folder where to save checkerboard images:")
-                        input("Press enter to continue")
-                        root = tk.Tk()
-                        root.withdraw()
-                        dirpath = filedialog.askdirectory()
-                        print(dirpath)
-                        break
+                        while True:
+                            print("\n=================================================")
+                            print("Please choose the folder where to save checkerboard images:")
+                            input("Press enter to continue")
+                            root = tk.Tk()
+                            root.withdraw()
+                            dirpath = filedialog.askdirectory()
+                            print(dirpath)
+                            if dirpath == "":
+                                input("Please select folder")
+                            else:
+                                break
+                        
                     else:
                         print("ERROR")
 
@@ -63,10 +70,10 @@ class Calibrate:
 
         print("Press 'q' on capture to stop")
 
-        cap = cv2.VideoCapture(cameraList["index"])
-        cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraList["width"])
-        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraList["height"])
-        cap.set(cv2.CAP_PROP_FPS, cameraList["fps"])
+        cap = cv2.VideoCapture(cameraSetting["index"])
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraSetting["width"])
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraSetting["height"])
+        cap.set(cv2.CAP_PROP_FPS, cameraSetting["fps"])
 
         frameCount = 0
         capImageCount = 0
@@ -107,18 +114,22 @@ class Calibrate:
     #Calibration of Camera
     def Calibration():
 
-        #Find Director
-        print("\n=================================================")
-        print("Please choose the folder where the checkerboard images are located:")
-        input("Press enter to continue")
-        root = tk.Tk()
-        root.withdraw()
-        dirpath = filedialog.askdirectory()
-        print(dirpath)
+        #Find Directory
+        while True:
+            print("\n=================================================")
+            print("Please choose the folder where the checkerboard images are located:")
+            input("Press enter to continue")
+            root = tk.Tk()
+            root.withdraw()
+            dirpath = filedialog.askdirectory()
+            print(dirpath)
+            if dirpath == "":
+                input("Please select folder")
+            else:
+                break
         
         #Width of Checkerboard
-        good = False
-        while not good:
+        while True:
             try:
                 print("\n=================================================")
                 width = int(input("Please enter the width of the checkerboard (no. of corners): "))
@@ -131,8 +142,7 @@ class Calibrate:
                     break
 
         #Height of Checkerboard
-        good = False
-        while not good:
+        while True:
             try:
                 print("\n=================================================")
                 height = int(input("Please enter the height of the checkerboard (no. of corners): "))
@@ -145,8 +155,7 @@ class Calibrate:
                     break
        
         #Checkerboard square length
-        good = False
-        while not good:
+        while True:
             try:
                 print("\n=================================================")
                 square_size = float(input("Please enter the size of the squares (mm): "))
