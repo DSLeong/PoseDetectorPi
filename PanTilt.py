@@ -21,11 +21,6 @@ class PanTilt:
     def EyeInHand(x, y, z, ex, ey, ez, inputX, inputY, inputZ):
         print("EyeInHand")
 
-        if x < 0: x += 360
-        if y < 0: y += 360
-        if inputX < 0: inputX += 360
-        if inputY < 0: inputY += 360
-
         if PanTiltEnable:
             #=============================
             #Pan (Vertical)

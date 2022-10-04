@@ -2,6 +2,7 @@ import argparse
 import cv2
 import numpy as np
 import os
+import re
 import time
 import tkinter as tk
 from   tkinter import filedialog
@@ -126,7 +127,12 @@ class Calibrate:
             if dirpath == "":
                 input("Please select folder")
             else:
-                break
+                #Check for images (in .jpg format)
+                images = [file for file in os.listdir(dirpath) if re.findall(r"\w+\.jpg", file)]
+                if len(images) < 1:
+                    input(str(dirpath) + " - has no images (.jpg), please select a new folder")
+                else:
+                    break
         
         #Width of Checkerboard
         while True:
@@ -181,19 +187,17 @@ class Calibrate:
         objpoints = []  # 3d point in real world space
         imgpoints = []  # 2d points in image plane.
 
-        images = os.listdir(dirpath)
-        
-
         #Calibrate Images
         print("Rendering Calibration")
         usableImages = 0
         for fname in images:
             print(fname)
 
+            #Retrieve and grayscale image
             img = cv2.imread(os.path.join(dirpath, fname))
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-            # Find the chess board corners
+            # Find the chess board corners within image
             ret, corners = cv2.findChessboardCorners(gray, (width, height), None)
 
             # If found, add object points, image points (after refining them)

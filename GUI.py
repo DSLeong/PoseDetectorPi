@@ -48,17 +48,14 @@ def getCameras():
 
 				cap.release()
 				cv2.destroyAllWindows()
-				
+
 				try:
 					confirm = int(input("Use this camera? (0:False | 1:True)? "))
 				except ValueError:
 					input("Please input Numeric Values.")
 				else:
-					if confirm == 0:
-						continue
-
-				input("Please Enter to continue")
-				break
+					if confirm == 1:
+						break
 
     #Resolution of Camera
 	while True:
@@ -208,12 +205,14 @@ while running:
 	elif command == 1: #Camera Select 
 		print("CALIBRATION")
 		cameraSetting = getCameras()
+		print("\n=================================================")
+		input("You can now run calibration")
 
 	elif command == 2: #Calibration
 		if not cameraSetting:
 			print("\n=================================================")
 			print("Camera selection does not exist.")
-			print("Please run Camera selection.")
+			input("Please run Camera selection.")
 		else:
 			while True:
 				try:
@@ -244,13 +243,13 @@ while running:
 		if not cameraSetting:
 			print("\n=================================================")
 			print("Camera selection does not exist.")
-			print("Please run Camera selection.")
+			input("Please run Camera selection.")
 
         #if Calibration does not exist
 		elif not os.path.isfile("calibration_matrix.npy") or not os.path.isfile("distortion_coefficients.npy"):
 			print("\n=================================================")
 			print("Calibration does not exist.")
-			print("Please run Calibration first.")
+			input("Please run Calibration first.")
 
 		#Detect Pose
 		elif command == 4:
