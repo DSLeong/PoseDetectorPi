@@ -22,7 +22,8 @@ def getCameras():
 		i += 1
 
 	#Set Camera
-	while True:
+	set = False
+	while set == False:
 		try:
 			print("\n=================================================")
 			print("List of avaliable camera/s index")
@@ -49,12 +50,16 @@ def getCameras():
 				cap.release()
 				cv2.destroyAllWindows()
 
-				try:
-					confirm = int(input("Use this camera? (0:False | 1:True)? "))
-				except ValueError:
-					input("Please input Numeric Values.")
-				else:
-					if confirm == 1:
+				while True:
+					try:
+						confirm = int(input("Use this camera? (0:False | 1:True)? "))
+					except ValueError:
+						input("Please input Numeric Values.")
+					else:
+						if userInput < 0 or userInput > 1:
+							input("Please input from Command List.")
+						elif confirm == 1:
+							set = True
 						break
 
     #Resolution of Camera
