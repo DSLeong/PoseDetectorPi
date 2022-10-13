@@ -47,6 +47,7 @@ class GenerateTags:
                                 input("Please select folder")
                             else:
                                 break
+                        break
                         
                     else:
                         print("ERROR")
