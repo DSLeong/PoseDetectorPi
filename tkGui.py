@@ -180,6 +180,8 @@ class Gui:
                 self.camSettings["fps"] = fps
         if (error):
             tk.messagebox.showerror(title="Camera Settings Error", message=errorMsg)
+        else:
+            tk.messagebox.showinfo(title="Camera Settings", message="Camera settings saved")
         
 
             
@@ -227,8 +229,38 @@ class Gui:
 
     def generate_params(self):
         self.arucoDict = self.dictCB.get()
-        self.arucoTagID = self.arucoTagIDText.get()
+        
         self.arucoTagSize = self.arucoTagSizeText.get()
+
+        try:
+            tagID = int(self.arucoTagIDText.get())
+        except ValueError: 
+            error = True
+            errorMsg += "Tag ID not set \n"
+        else: 
+            if tagID <= 0:
+                error = True
+                errorMsg += "Tag ID not positive \n"
+            else:
+                self.arucoTagID = self.arucoTagIDText.get()
+        try:
+            tagID = int(self.arucoTagSizeText.get())
+        except ValueError: 
+            error = True
+            errorMsg += "Tag size not set \n"
+        else: 
+            if tagID <= 0:
+                error = True
+                errorMsg += "Tag size not positive \n"
+            else:
+                self.arucoTagID = self.arucoTagIDText.get()
+        if (error):
+            tk.messagebox.showerror(title="Generate Tags Error", message=errorMsg)
+        else:
+            tk.messagebox.showinfo(title="Generate Tag", message="Tag Generated")
+            
+
+        
         #GenerateTags()
 
     def get_tag_dirpath(self):
@@ -249,8 +281,13 @@ class Gui:
             height= self.displayHeight)
         self.mainDisplayFrame.pack()
 
-        Label(master=self.mainDisplayFrame, text='Please choose the directory where the calibration images will be saved', pady=50,font=self.txtBodyFormatting).grid(column=0, row=0)
-        Button(master=self.mainDisplayFrame, text="...", activebackground="gray99", activeforeground="gray50", font=self.txtBodyFormatting, command=self.get_dirpath ).grid(column=1, row=0)
+        Label(master=self.mainDisplayFrame, text='Please choose the directory where the calibration images will be saved', pady=self.defaultPadY,font=self.txtBodyFormatting).grid(column=0, row=0)
+        Button(master=self.mainDisplayFrame, text="...", activebackground="gray99", activeforeground="gray50", font=self.txtBodyFormatting, command=self.get_calib_dirpath ).grid(column=1, row=0)
+
+        Label(master=self.mainDisplayFrame, text='Flip Camera:', pady=self.defaultPadY, font=self.txtBodyFormatting).grid(column=0, row=1)
+        flipCamSel = StringVar()
+        r1 = ttk.Radiobutton(master=self.mainDisplayFrame, text='yes', value=True, variable=flipCamSel).grid(column=1, row=1)
+        r1 = ttk.Radiobutton(master=self.mainDisplayFrame, text='no', value=False, variable=flipCamSel).grid(column=2, row=1)
         
 
         
