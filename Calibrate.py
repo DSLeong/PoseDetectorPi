@@ -72,66 +72,9 @@ class Calibrate:
 	#=======================================================================================================================
 
     #Calibration of Camera
-    def Calibration():
+    def Calibration(dirpath, width, height, square_size):
 
-        #Find Directory
-        while True:
-            print("\n=================================================")
-            print("Please choose the folder where the checkerboard images are located:")
-            input("Press enter to continue")
-            root = tk.Tk()
-            root.withdraw()
-            dirpath = filedialog.askdirectory()
-            print(dirpath)
-            if dirpath == "":
-                input("Please select folder")
-            else:
-                #Check for images (in .jpg format)
-                images = [file for file in os.listdir(dirpath) if re.findall(r"\w+\.jpg", file)]
-                if len(images) < 1:
-                    input(str(dirpath) + " - has no images (.jpg), please select a new folder")
-                else:
-                    break
-        
-        #Width of Checkerboard
-        while True:
-            try:
-                print("\n=================================================")
-                width = int(input("Please enter the width of the checkerboard (no. of corners): "))
-            except ValueError:
-                input("Please input Numeric Value.")
-            else:
-                if width <= 0:
-                    print('Error: Please enter a positive number')
-                else:
-                    break
-
-        #Height of Checkerboard
-        while True:
-            try:
-                print("\n=================================================")
-                height = int(input("Please enter the height of the checkerboard (no. of corners): "))
-            except ValueError:
-                input("Please input Numeric Value.")
-            else:
-                if height <= 0:
-                    print('Error: Please enter a positive number')
-                else:
-                    break
-       
-        #Checkerboard square length
-        while True:
-            try:
-                print("\n=================================================")
-                square_size = float(input("Please enter the size of the squares (mm): "))
-            except ValueError:
-                input("Please input Numeric Value.")
-            else:
-                if square_size <= 0:
-                    print('Error: Please enter a positive number')
-                else:
-                    break
-
+        images = [file for file in os.listdir(dirpath) if re.findall(r"\w+\.jpg", file)]
 
         # Apply camera calibration operation for images in the given directory path.
 

@@ -301,7 +301,21 @@ class Gui:
         r1 = ttk.Radiobutton(master=self.mainDisplayFrame, text='yes', value='y', variable=self.flipCamSel).grid(column=1, row=1)
         r1 = ttk.Radiobutton(master=self.mainDisplayFrame, text='no', value='n', variable=self.flipCamSel).grid(column=2, row=1)
 
-        Button(master=self.mainDisplayFrame, text="Start", activebackground="gray99", activeforeground="gray50", font=self.txtBodyFormatting, command=self.start_calibration ).grid(column=1, row=3)
+        Label(master=self.mainDisplayFrame, text='Checkerboard:', pady=self.defaultPadY, font=self.txtBodyFormatting).grid(column=0, row=3)
+        Label(master=self.mainDisplayFrame, text='Height:', pady=self.defaultPadY, font=self.txtBodyFormatting).grid(column=0, row=4)
+        self.checkerboardHeight = Entry(master=self.mainDisplayFrame, width = 10)
+        self.checkerboardHeight.grid(column=1, row=4)
+
+        Label(master=self.mainDisplayFrame, text='Width:', pady=self.defaultPadY, font=self.txtBodyFormatting).grid(column=0, row=5)
+        self.checkerboardWidth = Entry(master=self.mainDisplayFrame, width = 10)
+        self.checkerboardWidth.grid(column=1, row=5)
+
+        Label(master=self.mainDisplayFrame, text='Checkerboard square size (mm):', pady=self.defaultPadY, font=self.txtBodyFormatting).grid(column=0, row=6)
+        self.checkerboardSqSize = Entry(master=self.mainDisplayFrame, width = 10)
+        self.checkerboardSqSize.grid(column=1, row=6)
+        
+        Button(master=self.mainDisplayFrame, text="Take Calibration ", activebackground="gray99", activeforeground="gray50", font=self.txtBodyFormatting, command=self.start_calibration ).grid(column=2, row=6)
+
         
     def start_calibration(self):
         flip = self.flipCamSel.get()
@@ -309,7 +323,41 @@ class Gui:
             flip = False
         else:
             flip = True
+
+        error = False
+        try:
+            checkHeight = int(self.checkerboardHeight.get())
+        except ValueError: 
+            error = True
+            errorMsg += "Tag ID not set \n"
+        else: 
+            if checkHeight <= 0:
+                error = True
+                errorMsg += "Tag ID not positive \n"
+
+        try:
+            checkWidth = int(self.checkerboardWidth.get())
+        except ValueError: 
+            error = True
+            errorMsg += "Tag ID not set \n"
+        else: 
+            if checkWidth <= 0:
+                error = True
+                errorMsg += "Tag ID not positive \n"
+            
+        try:
+            sqSize = int(self.checkerboardSqSize.get())
+        except ValueError: 
+            error = True
+            errorMsg += "Tag ID not set \n"
+        else: 
+            if sqSize <= 0:
+                error = True
+                errorMsg += "Tag ID not positive \n"
+
         Calibrate.camCapture(self.camSettings, flip, self.calibDirpath)
+
+        Calibrate(self.calibDirpath, checkHeight, checkWidth, sqSize)
     
     def draw_detect(self):
         self.mainDisplayFrame = tk.Frame(
