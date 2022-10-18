@@ -10,13 +10,14 @@ from tkinter import ttk
 from tkinter import filedialog
 from utils import ARUCO_DICT
 from GenerateTags import GenerateTags
+from Calibrate import Calibrate
 
 class Gui:
 
     displayHeight = 480
     displayWidth = 640
 
-    defaultPadY = 30
+    defaultPadY = 25
     defaultPadX = 10
 
     welcomeMessage = "Hi! welcome to group fourexplore's pose detection system read below to get started."
@@ -27,7 +28,7 @@ class Gui:
     navbarOptions = {"home":"Home", "camera" : "Camera Settings", "generate" : "Generate Markers", "calibrate" : "Calibrate", "detect" : "Detect Pose"}
 
     txtBodyFormatting = 'TkDefaultFont 8'
-    txtHeadingFormatting = 'TkDefaultFont 10 bold'
+    txtHeadingFormatting = 'TkDefaultFont 9 bold'
 
     resOptions = { "1: Standard 480p  [640, 480]" : [640 , 480], "2: High 720p  [1280, 720]" : [1280, 720], "3: Full HD 1080p [1920,1080])" : [1920,1080]}
 
@@ -160,7 +161,7 @@ class Gui:
             error = True
             errorMsg += "Camera not set \n"
         else:
-            self.camSettings["index"] = self.camCB.get()
+            self.camSettings["index"] = int(self.camCB.get())
         if (self.resolutionCB.get() == ""):
             error = True
             errorMsg += "Resolution not set \n"
@@ -232,6 +233,8 @@ class Gui:
         
         self.arucoTagSize = self.arucoTagSizeText.get()
 
+        error = False
+
         try:
             tagID = int(self.arucoTagIDText.get())
         except ValueError: 
@@ -242,18 +245,27 @@ class Gui:
                 error = True
                 errorMsg += "Tag ID not positive \n"
             else:
-                self.arucoTagID = self.arucoTagIDText.get()
+                self.arucoTagID = tagID
         try:
-            tagID = int(self.arucoTagSizeText.get())
+            tagSize = int(self.arucoTagSizeText.get())
         except ValueError: 
             error = True
             errorMsg += "Tag size not set \n"
         else: 
-            if tagID <= 0:
+            if tagSize <= 0:
                 error = True
                 errorMsg += "Tag size not positive \n"
             else:
-                self.arucoTagID = self.arucoTagIDText.get()
+                self.arucoTagSize = tagSize
+        if (not error):
+            tagSettings = {}
+            tagSettings["dict"] = self.arucoDict
+            tagSettings["size"] = self.arucoTagSize
+            tagSettings["id"] = self.arucoTagID
+            tagSettings["dirpath"] = self.tagDirpath
+
+            GenerateTags(tagSettings)
+
         if (error):
             tk.messagebox.showerror(title="Generate Tags Error", message=errorMsg)
         else:
@@ -261,7 +273,7 @@ class Gui:
             
 
         
-        #GenerateTags()
+        
 
     def get_tag_dirpath(self):
         root = tk.Tk()
@@ -285,12 +297,19 @@ class Gui:
         Button(master=self.mainDisplayFrame, text="...", activebackground="gray99", activeforeground="gray50", font=self.txtBodyFormatting, command=self.get_calib_dirpath ).grid(column=1, row=0)
 
         Label(master=self.mainDisplayFrame, text='Flip Camera:', pady=self.defaultPadY, font=self.txtBodyFormatting).grid(column=0, row=1)
-        flipCamSel = StringVar()
-        r1 = ttk.Radiobutton(master=self.mainDisplayFrame, text='yes', value=True, variable=flipCamSel).grid(column=1, row=1)
-        r1 = ttk.Radiobutton(master=self.mainDisplayFrame, text='no', value=False, variable=flipCamSel).grid(column=2, row=1)
-        
+        self.flipCamSel = StringVar()
+        r1 = ttk.Radiobutton(master=self.mainDisplayFrame, text='yes', value='y', variable=self.flipCamSel).grid(column=1, row=1)
+        r1 = ttk.Radiobutton(master=self.mainDisplayFrame, text='no', value='n', variable=self.flipCamSel).grid(column=2, row=1)
 
+        Button(master=self.mainDisplayFrame, text="Start", activebackground="gray99", activeforeground="gray50", font=self.txtBodyFormatting, command=self.start_calibration ).grid(column=1, row=3)
         
+    def start_calibration(self):
+        flip = self.flipCamSel.get()
+        if flip == 'n':
+            flip = False
+        else:
+            flip = True
+        Calibrate.camCapture(self.camSettings, flip, self.calibDirpath)
     
     def draw_detect(self):
         self.mainDisplayFrame = tk.Frame(

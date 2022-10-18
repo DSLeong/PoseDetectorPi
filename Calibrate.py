@@ -1,5 +1,5 @@
 import argparse
-import cv2
+import cv2 as cv
 import numpy as np
 import os
 import re
@@ -10,100 +10,58 @@ from   tkinter import filedialog
 class Calibrate:
 
     #Produce Images from Camera for Calibration
-    def camCapture(cameraSetting):
+    def camCapture(cameraSetting, flip, dirpath):
 
-        #Find/Create Directory
-        while True:
-            try:
-                print("\n=================================================")
-                userInput = int(input("Create Directory for Images (0:False 1:True)? "))
-            except ValueError:
-                input("Please input Numeric Values.")
-            else:
-                if userInput < 0 or userInput > 1:
-                    input("Please input from Command List.")
-                else:
-                    if userInput == 1: #Create Directory
-                        dirName = "Capture_" + str(cameraSetting["index"]) + "_" + str(cameraSetting["height"])
-                        try:
-                            os.mkdir(dirName)
-                        except FileExistsError:
-                            print("Directory '" , dirName ,  "' already exists")
-                        else:
-                            print("Directory '" , dirName ,  "' Created")
-
-                        dirpath = os.path.join(os.getcwd(), dirName)
-                        print(dirpath)
-                        break
-
-                    elif userInput == 0: #Find Directory
-                        while True:
-                            print("\n=================================================")
-                            print("Please choose the folder where to save checkerboard images:")
-                            input("Press enter to continue")
-                            root = tk.Tk()
-                            root.withdraw()
-                            dirpath = filedialog.askdirectory()
-                            print(dirpath)
-                            if dirpath == "":
-                                input("Please select folder")
-                            else:
-                                break
-                        break
-                        
-                    else:
-                        print("ERROR")
-
-        #Flip Camera
-        while True:
-            try:
-                print("\n=================================================")
-                userInput = int(input("Flip Camera? (0: No | 1: Yes)? "))
-            except ValueError:
-                input("Please input Numeric Values.")
-            else:
-                if userInput < 0 or userInput > 1:
-                    input("Please input from Command List.")
-                else:
-                    if userInput == 0: flip = False
-                    else: flip = True
-                    break
+        index = cameraSetting["index"]
+        width = cameraSetting["width"]
+        height = cameraSetting["height"]
+        fps = cameraSetting["fps"]
+             
 
 
         print("Press 'q' on capture to stop")
 
-        cap = cv2.VideoCapture(cameraSetting["index"])
-        cap.set(cv2.CAP_PROP_FRAME_WIDTH, cameraSetting["width"])
-        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cameraSetting["height"])
-        cap.set(cv2.CAP_PROP_FPS, cameraSetting["fps"])
+        cap = cv.VideoCapture(index)
+        cap.set(cv.CAP_PROP_FRAME_WIDTH, width)
+        cap.set(cv.CAP_PROP_FRAME_HEIGHT, height)
+        cap.set(cv.CAP_PROP_FPS, fps)
 
         frameCount = 0
         capImageCount = 0
 
         timeStart = time.time()
+
+        print(type(cameraSetting["index"]))
+        print(type(cameraSetting["width"]))
+        print(type(cameraSetting["height"]))
+        print(type(cameraSetting["fps"]))
+        print(type(flip))
+        print(type(dirpath))
+
         while True: 
             #reading camera frame
             ret, frame = cap.read()
-            if flip: frame = cv2.flip(frame,-1)
+            if flip: frame = cv.flip(frame,-1)
+            #Display Video
+            cv.imshow("Image Feed - Press 'q' to stop", frame)
 
             #Capture Image
             frameCount += 1
 
             if frameCount == 30:
                 img = "cap_image_" + str(capImageCount) + ".jpg"
-                cv2.imwrite(os.path.join(dirpath, img), frame)
+                #cv.imwrite(os.path.join(dirpath, img), frame)
 
                 capImageCount += 1
                 frameCount = 0
             
-            #Display Video
-            cv2.imshow("Image Feed - Press 'q' to stop", frame)
+            
     
-            key = cv2.waitKey(1) & 0xFF 
+            key = cv.waitKey(1) & 0xFF 
             if key == ord("q"): break
 
         cap.release()
-        cv2.destroyAllWindows()
+        cv.destroyAllWindows()
 
         elapseTime = time.time() - timeStart
         print("\n=================================================")
@@ -178,7 +136,7 @@ class Calibrate:
         # Apply camera calibration operation for images in the given directory path.
 
         # termination criteria
-        criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
+        criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
         # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(8,6,0)
         objp = np.zeros((height*width, 3), np.float32)
@@ -195,34 +153,34 @@ class Calibrate:
             print(fname)
 
             #Retrieve and grayscale image
-            img = cv2.imread(os.path.join(dirpath, fname))
-            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            img = cv.imread(os.path.join(dirpath, fname))
+            gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
             # Find the chess board corners within image
-            ret, corners = cv2.findChessboardCorners(gray, (width, height), None)
+            ret, corners = cv.findChessboardCorners(gray, (width, height), None)
 
             # If found, add object points, image points (after refining them)
             if ret:
                 usableImages += 1
                 objpoints.append(objp)
 
-                corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
+                corners2 = cv.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
                 imgpoints.append(corners2)
 
                 # Draw and display the corners
-                img = cv2.drawChessboardCorners(img, (width, height), corners2, ret)
+                img = cv.drawChessboardCorners(img, (width, height), corners2, ret)
 
             #Display image with Calibration (May not need)
-            cv2.imshow("Image Calibration",img)
-            cv2.waitKey(1000)
+            cv.imshow("Image Calibration",img)
+            cv.waitKey(1000)
 
-        cv2.destroyAllWindows()
+        cv.destroyAllWindows()
         
 
         #Calibration of Camera
         print("\nCalibrating Camera using Images - Please Wait")
         timeStart = time.time()
-        ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
+        ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
         elapseTime = time.time() - timeStart
         
         print("\n=================================================")
