@@ -204,11 +204,11 @@ while running:
 		
 	#Switch for Modules
 	if command == 0: #Close Program
-		print("EXIT")
+		#print("EXIT")
 		running = False
 
 	elif command == 1: #Camera Select 
-		print("CALIBRATION")
+		#print("CALIBRATION")
 		cameraSetting = getCameras()
 		print("\n=================================================")
 		input("You can now run calibration")
@@ -238,7 +238,7 @@ while running:
 		input("Press Enter to continue")
 
 	elif command == 3: #Generate Tags
-		print("GENERATE TAGS")
+		#print("GENERATE TAGS")
 		tagSetting = setTag()
 		GenerateTags(tagSetting)
 
@@ -258,13 +258,13 @@ while running:
 
 		#Detect Pose
 		elif command == 4:
-			print("EYE TO HAND")
+			#print("EYE TO HAND")
 			tagSetting = setTag()
 			PoseDetector.poseDetector(PoseDetector, None, None, None, tagSetting, cameraSetting)
 
 		#Follow Pose
 		elif command == 5:
-			print("EYE IN HAND")
+			#print("EYE IN HAND")
 
 			while True:
 				try:
