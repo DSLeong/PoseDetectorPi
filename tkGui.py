@@ -11,6 +11,7 @@ from tkinter import filedialog
 from utils import ARUCO_DICT
 from GenerateTags import GenerateTags
 from Calibrate import Calibrate
+from PoseDetector import PoseDetector
 
 class Gui:
 
@@ -221,7 +222,7 @@ class Gui:
         self.arucoTagIDText = Entry(master=self.mainDisplayFrame, width = 10)
         self.arucoTagIDText.grid(column=1, row=2)
         
-        Label(master=self.mainDisplayFrame, text='Please enter the size of the tag:', pady=self.defaultPadY,font=self.txtBodyFormatting).grid(column=0, row=3)
+        Label(master=self.mainDisplayFrame, text='Please enter the size of the tag: (mm)', pady=self.defaultPadY,font=self.txtBodyFormatting).grid(column=0, row=3)
 
         self.arucoTagSizeText = Entry(master=self.mainDisplayFrame, width = 10)
         self.arucoTagSizeText.grid(column=1, row=3)
@@ -365,6 +366,55 @@ class Gui:
             width = self.displayWidth,
             height= self.displayHeight)
         self.mainDisplayFrame.pack()
+
+        #marker size
+        Label(master=self.mainDisplayFrame, text='Please enter the size of the tag: (mm)', pady=self.defaultPadY,font=self.txtBodyFormatting).grid(column=0, row=0)
+
+        self.arucoTagSizeDetect = Entry(master=self.mainDisplayFrame, width = 10)
+        self.arucoTagSizeDetect.grid(column=1, row=0)
+
+        self.flipCamSel = StringVar()
+        r1 = ttk.Radiobutton(master=self.mainDisplayFrame, text='yes', value='y', variable=self.flipCamSel).grid(column=1, row=1)
+        r1 = ttk.Radiobutton(master=self.mainDisplayFrame, text='no', value='n', variable=self.flipCamSel).grid(column=2, row=1)
+
+        Button(master=self.mainDisplayFrame, text="Start Calibration ", activebackground="gray99", activeforeground="gray50", font=self.txtBodyFormatting, command=self.start_detection ).grid(column=2, row=6, padx=10)
+
+    def start_detection(self):
+        error = False
+        errorMsg = ""
+        tagSettings = {}
+
+        try:
+            tagSize = int(self.arucoTagSizeDetect.get())
+        except ValueError: 
+            error = True
+            errorMsg += "Tag size not set \n"
+        else: 
+            if tagSize <= 0:
+                error = True
+                errorMsg += "Tag size not positive \n"
+            else:
+                tagSettings["tagSize"]
+
+        
+        flip = self.flipCamSel.get()
+        if flip == 'n':
+            flip = False
+        else:
+            flip = True
+
+        try:
+            self.camSettings
+        except NameError:
+            error = True
+            errorMsg += "Please enter camera Settings \n"
+        if error:  
+            tk.messagebox.showerror(title="Generate Tags Error", message=errorMsg)
+        else:
+            PoseDetector(None, None, None, )
+
+
+
 
 
 

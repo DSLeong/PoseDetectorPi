@@ -73,19 +73,8 @@ class PoseDetector:
     def poseDetector(self, inputX, inputY, inputZ, tagSetting, cameraSetting):
         #Set Tag Type
         aruco_dict = cv2.aruco.getPredefinedDictionary(ARUCO_DICT[tagSetting["tagType"]])
+        marker_size = tagSetting["makerSize"]
 
-        #Get Marker Size
-        while True:
-            try:
-                print("\n=================================================")
-                marker_size = float(input("Please enter the full length of the marker being used (mm): "))
-            except ValueError:
-                input("Please input Numeric Values.")
-            else:
-                if marker_size <= 0:
-                    print('Error: Please enter a positive number')
-                else:
-                    break
             
         #Load Camera Calibration
         camera_matrix = np.load("calibration_matrix.npy")
@@ -99,20 +88,7 @@ class PoseDetector:
         #Detect
         if inputX == None and inputY == None and inputZ == None:
             follow = False
-        else:
-            #Flip Camera
-            while True:
-                try:
-                    print("\n=================================================")
-                    userInput = int(input("Flip Camera? (0: No | 1: Yes)? "))
-                except ValueError:
-                    input("Please input Numeric Values.")
-                else:
-                    if userInput < 0 or userInput > 1:
-                        input("Please input from Command List.")
-                    else:
-                        if userInput == 1: flip = True
-                        break
+        
             
         #Camera Setting
         cap = cv2.VideoCapture(cameraSetting["index"])
