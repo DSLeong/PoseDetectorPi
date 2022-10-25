@@ -314,7 +314,7 @@ class Gui:
         self.checkerboardSqSize = Entry(master=self.mainDisplayFrame, width = 10)
         self.checkerboardSqSize.grid(column=1, row=6)
         
-        Button(master=self.mainDisplayFrame, text="Take Calibration ", activebackground="gray99", activeforeground="gray50", font=self.txtBodyFormatting, command=self.start_calibration ).grid(column=2, row=6)
+        Button(master=self.mainDisplayFrame, text="Start Calibration ", activebackground="gray99", activeforeground="gray50", font=self.txtBodyFormatting, command=self.start_calibration ).grid(column=2, row=6, padx=10)
 
         
     def start_calibration(self):
