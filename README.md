@@ -1,5 +1,17 @@
 # PoseDetectorPi
-A Swinburne Final Year Project to develop a Pose Detector using OpenCV which can be deployed on a Raspberry Pi 4B.
+A 2022 Swinburne Final Year Project to develop a Pose Detector using OpenCV which can be deployed on a Raspberry Pi 4B.
+
+Documenation and Guide are within 'Docs + Guide' Folder'
+
+
+# Details
+Daniel Leong - 102589132@student.swin.edu.au | DSLeong28@gmail.com
+
+Parth Patel - 101604584@student.swin.edu.au
+
+Preenit Kshirsagar - 102486657@student.swin.edu.au 
+
+Dylan Were - 102102160@student.swin.edu.au
 
 
 # ArUco
@@ -27,4 +39,9 @@ Inspired by Easiest Pan-Tilt System for the Raspberry Pi - Quick Start Guide wit
 
 https://www.youtube.com/watch?v=Dc9AEFw0hww
 
-# Other Refernces
+
+# Simulation
+Simulation software used is CoppeliaSim - https://www.coppeliarobotics.com/
+
+
+# Other References
