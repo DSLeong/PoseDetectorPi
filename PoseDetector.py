@@ -2,6 +2,11 @@ import cv2
 import math
 import numpy as np
 
+# Required to Run Simulation
+import time
+import simulation as simulate # Simulation Code
+import sim # Simulation Software -- CoppeliaSim Directory
+
 from PanTilt import PanTilt as PanTilt
 from utils import ARUCO_DICT
 
@@ -86,7 +91,26 @@ class PoseDetector:
                     print('Error: Please enter a positive number')
                 else:
                     break
-            
+
+        #Simulation Initiation
+        while True:
+            try:
+                print("\n=================================================")
+                print("\nIf you want to run simulation make sure it is running before you place your answer !!!")
+                simulation = int(input("Run with Simulation: (0:No | 1:Yes)?: ")) # To Check if run Simulation
+            except ValueError:
+                input("Please input Numeric Values.")
+            else:
+                if simulation == 1:
+                    joint_handle = []
+                    clientID = 0
+                    clientID, joint_handle = simulate.simulation_init()
+                    print("---------------Simulation Initiated ----------------")
+                    break
+                elif simulation == 0:
+                    break
+                
+
         #Load Camera Calibration
         camera_matrix = np.load("calibration_matrix.npy")
         camera_distortion = np.load("distortion_coefficients.npy")
@@ -175,6 +199,10 @@ class PoseDetector:
                 #Display on output
                 tvec_str = "x=%4.0f y=%4.0f z=%4.0f eulerZ=%4.0f"%(x, y, z, math.degrees(eulerZ))
                 cv2.putText(frame, tvec_str, (20, 40), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2, cv2.LINE_AA)
+
+                #Main Simulation Call     
+                if simulation == 1:
+                    simulate.simulation_run(x/1000,y/1000,z/1000,math.radians(eulerX),math.radians(eulerY),math.radians(eulerZ),joint_handle, clientID)
                 
             #
             cv2.imshow("Pose Estimation - Press 'q' to stop", frame) 
