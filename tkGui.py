@@ -230,9 +230,9 @@ class Gui:
         Button(master=self.mainDisplayFrame, text="Generate Tag", activebackground="gray99", activeforeground="gray50", font=self.txtBodyFormatting, command=self.generate_params ).grid(column=2, row=4, padx=20)
 
     def generate_params(self):
-        self.arucoDict = self.dictCB.get()
+        arucoDict = self.dictCB.get()
         
-        self.arucoTagSize = self.arucoTagSizeText.get()
+        arucoTagSize = self.arucoTagSizeText.get()
 
         error = False
 
@@ -246,7 +246,7 @@ class Gui:
                 error = True
                 errorMsg += "Tag ID not positive \n"
             else:
-                self.arucoTagID = tagID
+                arucoTagID = tagID
         try:
             tagSize = int(self.arucoTagSizeText.get())
         except ValueError: 
@@ -260,9 +260,9 @@ class Gui:
                 self.arucoTagSize = tagSize
         if (not error):
             tagSettings = {}
-            tagSettings["dict"] = self.arucoDict
-            tagSettings["size"] = self.arucoTagSize
-            tagSettings["id"] = self.arucoTagID
+            tagSettings["dict"] = arucoDict
+            tagSettings["size"] = arucoTagSize
+            tagSettings["id"] = arucoTagID
             tagSettings["dirpath"] = self.tagDirpath
 
             GenerateTags(tagSettings)
@@ -356,9 +356,17 @@ class Gui:
                 error = True
                 errorMsg += "Tag ID not positive \n"
 
-        Calibrate.camCapture(self.camSettings, flip, self.calibDirpath)
+        try:
+            self.camSettings
+        except AttributeError:
+            error = True
+            errorMsg += "Please enter camera settings \n"
 
-        Calibrate(self.calibDirpath, checkHeight, checkWidth, sqSize)
+        if error:  
+            tk.messagebox.showerror(title="Calibrate Error", message=errorMsg)
+        else:
+            Calibrate.camCapture(self.camSettings, flip, self.calibDirpath)
+            Calibrate(self.calibDirpath, checkHeight, checkWidth, sqSize)
     
     def draw_detect(self):
         self.mainDisplayFrame = tk.Frame(
@@ -373,16 +381,27 @@ class Gui:
         self.arucoTagSizeDetect = Entry(master=self.mainDisplayFrame, width = 10)
         self.arucoTagSizeDetect.grid(column=1, row=0)
 
+        Label(master=self.mainDisplayFrame, text='Flip camera?', pady=self.defaultPadY,font=self.txtBodyFormatting).grid(column=0, row=1)
         self.flipCamSel = StringVar()
         r1 = ttk.Radiobutton(master=self.mainDisplayFrame, text='yes', value='y', variable=self.flipCamSel).grid(column=1, row=1)
         r1 = ttk.Radiobutton(master=self.mainDisplayFrame, text='no', value='n', variable=self.flipCamSel).grid(column=2, row=1)
+        
 
-        Button(master=self.mainDisplayFrame, text="Start Calibration ", activebackground="gray99", activeforeground="gray50", font=self.txtBodyFormatting, command=self.start_detection ).grid(column=2, row=6, padx=10)
+        Label(master=self.mainDisplayFrame, text='Please enter aruco dictionary: ', pady=self.defaultPadY,font=self.txtBodyFormatting).grid(column=0, row=2)
+        chosenDict = StringVar()
+        self.drawdictCB = ttk.Combobox(self.mainDisplayFrame, textvariable=chosenDict, width=20)
+        self.drawdictCB['values'] = [m for m in ARUCO_DICT]
+        self.drawdictCB['state'] = 'readonly'
+        self.drawdictCB.grid(column=1, row=2, ipadx=10)
+
+        Button(master=self.mainDisplayFrame, text="Start Calibration ", activebackground="gray99", activeforeground="gray50", font=self.txtBodyFormatting, command=self.start_detection ).grid(column=2, row=3, padx=10)
 
     def start_detection(self):
         error = False
         errorMsg = ""
         tagSettings = {}
+
+        tagSettings["dict"] = self.drawdictCB.get()
 
         try:
             tagSize = int(self.arucoTagSizeDetect.get())
@@ -394,24 +413,26 @@ class Gui:
                 error = True
                 errorMsg += "Tag size not positive \n"
             else:
-                tagSettings["tagSize"]
+                tagSettings["tagSize"] = tagSize
 
+        arucoDict = self.drawdictCB.get()
+        tagSettings["dict"] = arucoDict
         
         flip = self.flipCamSel.get()
         if flip == 'n':
-            flip = False
+            tagSettings["flip"] = False
         else:
-            flip = True
+            tagSettings["flip"] = True
 
         try:
             self.camSettings
-        except NameError:
+        except AttributeError:
             error = True
-            errorMsg += "Please enter camera Settings \n"
+            errorMsg += "Please enter camera settings \n"
         if error:  
-            tk.messagebox.showerror(title="Generate Tags Error", message=errorMsg)
+            tk.messagebox.showerror(title="Detect Pose Error", message=errorMsg)
         else:
-            PoseDetector(None, None, None, )
+            PoseDetector.poseDetector(None, None, None, None, tagSettings, self.camSettings)
 
 
 

@@ -72,18 +72,15 @@ class PoseDetector:
     #Estimate Pose Values
     def poseDetector(self, inputX, inputY, inputZ, tagSetting, cameraSetting):
         #Set Tag Type
-        aruco_dict = cv2.aruco.getPredefinedDictionary(ARUCO_DICT[tagSetting["tagType"]])
-        marker_size = tagSetting["makerSize"]
-
+        aruco_dict = cv2.aruco.getPredefinedDictionary(ARUCO_DICT[tagSetting["dict"]])
+        marker_size = tagSetting["tagSize"]
+        flip = tagSetting["flip"]
             
         #Load Camera Calibration
         camera_matrix = np.load("calibration_matrix.npy")
         camera_distortion = np.load("distortion_coefficients.npy")
 
-        #Eye in hand?
-        follow = True
-        flip = False
-        PanTilt.reset()
+
 
         #Detect
         if inputX == None and inputY == None and inputZ == None:
