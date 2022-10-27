@@ -235,6 +235,17 @@ class Gui:
         arucoTagSize = self.arucoTagSizeText.get()
 
         error = False
+        errorMsg = ""
+
+        if arucoDict == "" :
+            error = True
+            errorMsg += "Tag Dictionary not set\n"
+
+        try:
+            self.tagDirpath
+        except AttributeError:
+            error = True
+            errorMsg += "Tag Directory not set\n"
 
         try:
             tagID = int(self.arucoTagIDText.get())
@@ -319,42 +330,55 @@ class Gui:
 
         
     def start_calibration(self):
-        flip = self.flipCamSel.get()
-        if flip == 'n':
-            flip = False
-        else:
-            flip = True
-
+        
         error = False
+        errorMsg = ""
+
+        flip = self.flipCamSel.get()
+        if flip == "":
+            if flip == 'n':
+                flip = False
+            else:
+                flip = True
+        else:
+            error = True
+            errorMsg += "Flip cam not set \n"
+
+        try:
+            self.calibDirpath
+        except AttributeError:
+            error = True
+            errorMsg += "Tag Directory not set\n"
+
         try:
             checkHeight = int(self.checkerboardHeight.get())
         except ValueError: 
             error = True
-            errorMsg += "Tag ID not set \n"
+            errorMsg += "Checkerboard height not set \n"
         else: 
             if checkHeight <= 0:
                 error = True
-                errorMsg += "Tag ID not positive \n"
+                errorMsg += "Checkerboard height not positive \n"
 
         try:
             checkWidth = int(self.checkerboardWidth.get())
         except ValueError: 
             error = True
-            errorMsg += "Tag ID not set \n"
+            errorMsg += "Checkerboard width not set \n"
         else: 
             if checkWidth <= 0:
                 error = True
-                errorMsg += "Tag ID not positive \n"
+                errorMsg += "Checkerboard width not positive \n"
             
         try:
             sqSize = int(self.checkerboardSqSize.get())
         except ValueError: 
             error = True
-            errorMsg += "Tag ID not set \n"
+            errorMsg += "Checkerboard square size not set \n"
         else: 
             if sqSize <= 0:
                 error = True
-                errorMsg += "Tag ID not positive \n"
+                errorMsg += "Checkerboard square size not positive \n"
 
         try:
             self.camSettings
@@ -416,6 +440,11 @@ class Gui:
                 tagSettings["tagSize"] = tagSize
 
         arucoDict = self.drawdictCB.get()
+        if arucoDict == "":
+            error = True
+            errorMsg += "Dictionary not set"
+            
+
         tagSettings["dict"] = arucoDict
         
         flip = self.flipCamSel.get()
@@ -432,7 +461,7 @@ class Gui:
         if error:  
             tk.messagebox.showerror(title="Detect Pose Error", message=errorMsg)
         else:
-            PoseDetector.poseDetector(None, None, None, None, tagSettings, self.camSettings)
+            PoseDetector.PoseDetector(PoseDetector, None, None, None, tagSettings, self.camSettings)
 
 
 
