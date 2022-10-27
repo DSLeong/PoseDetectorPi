@@ -1,7 +1,7 @@
 import math
 import time
 
-PanTiltEnable = True
+PanTiltEnable = False
 try:
     import pantilthat
 except ImportError:
